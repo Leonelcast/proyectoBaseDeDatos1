@@ -131,7 +131,7 @@ if(isset($_POST["IdIngrediente"]) && !empty($_POST["IdIngrediente"])){
 
                 <form class="form-signin" id="form" action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
 
-           <center> <img src="./img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
+           <center> <img src="../img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
            <center><h3 > Actualizar Ingrediente</h3></center> 
             <hr>
 

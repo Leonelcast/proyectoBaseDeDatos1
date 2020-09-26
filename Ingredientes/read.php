@@ -71,7 +71,7 @@ if(isset($_GET["IdIngrediente"]) && !empty(trim($_GET["IdIngrediente"]))){
 
                 <form class="form-signin" id="form">
            <div class="page-header">
-           <center> <img src="./img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
+           <center> <img src="../img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
                        <center> <h3>Ingredientes</h3> </center>
                     </div>
                     <div class="form-group">

@@ -84,7 +84,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <div class="col-4">
 
                 <form class="form-signin" id="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-           <center> <img src="./img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
+           <center> <img src="../img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
            <br>
            <center><h2> Agregar Nuevo Ingrediente</h2></center> 
             <hr>
