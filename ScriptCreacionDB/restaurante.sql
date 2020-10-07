@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cambiosestados` (
-  `IdCambioEstado` int(11) NOT NULL,
+  `IdCambioEstado` int(11) NOT NULL AUTO_INCREMENT,
   `IdPedido` int(11) NOT NULL,
   `IdEstadoPedido` int(11) NOT NULL,
   `Comentario` varchar(255) NOT NULL
@@ -41,7 +41,7 @@ CREATE TABLE `cambiosestados` (
 --
 
 CREATE TABLE `categorias` (
-  `IdCategoria` int(11) NOT NULL,
+  `IdCategoria` int(11) NOT NULL AUTO_INCREMENT,
   `Tipo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -59,7 +59,7 @@ INSERT INTO `categorias` (`IdCategoria`, `Tipo`) VALUES
 --
 
 CREATE TABLE `estadopedidos` (
-  `IdEstadoPedido` int(11) NOT NULL,
+  `IdEstadoPedido` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -70,7 +70,7 @@ CREATE TABLE `estadopedidos` (
 --
 
 CREATE TABLE `ingredientes` (
-  `IdIngrediente` int(11) NOT NULL,
+  `IdIngrediente` int(11) NOT NULL AUTO_INCREMENT,
   `Inventario` int(11) NOT NULL,
   `Ingrediente` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -97,7 +97,7 @@ INSERT INTO `ingredientes` (`IdIngrediente`, `Inventario`, `Ingrediente`) VALUES
 --
 
 CREATE TABLE `menus` (
-  `IdMenu` int(11) NOT NULL,
+  `IdMenu` int(11) NOT NULL AUTO_INCREMENT,
   `IdCategoria` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -115,7 +115,7 @@ INSERT INTO `menus` (`IdMenu`, `IdCategoria`) VALUES
 --
 
 CREATE TABLE `pedidos` (
-  `IdPedido` int(11) NOT NULL,
+  `IdPedido` int(11) NOT NULL AUTO_INCREMENT,
   `IdEstadoPedido` int(11) NOT NULL,
   `Fecha` date NOT NULL,
   `Descricpion` varchar(255) NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE `pedidos` (
 --
 
 CREATE TABLE `pedidosplatillos` (
-  `IdPedidoPlatillo` int(11) NOT NULL,
+  `IdPedidoPlatillo` int(11) NOT NULL AUTO_INCREMENT,
   `IdPedido` int(11) NOT NULL,
   `IdPlatillo` int(11) NOT NULL,
   `Observacion` varchar(255) NOT NULL
@@ -143,7 +143,7 @@ CREATE TABLE `pedidosplatillos` (
 --
 
 CREATE TABLE `platillos` (
-  `IdPlatillos` int(11) NOT NULL,
+  `IdPlatillos` int(11) NOT NULL AUTO_INCREMENT,
   `precio` decimal(19,2) NOT NULL,
   `IdMenu` int(11) NOT NULL,
   `destacado` bit(1) NOT NULL,
@@ -164,7 +164,7 @@ INSERT INTO `platillos` (`IdPlatillos`, `precio`, `IdMenu`, `destacado`, `habili
 --
 
 CREATE TABLE `platillosingredientes` (
-  `IdPlatillosIngredientes` int(11) NOT NULL,
+  `IdPlatillosIngredientes` int(11) NOT NULL AUTO_INCREMENT,
   `IdIngrediente` int(11) NOT NULL,
   `IdPlatillo` int(11) NOT NULL,
   `Descripcion` varchar(255) NOT NULL,
@@ -185,7 +185,7 @@ INSERT INTO `platillosingredientes` (`IdPlatillosIngredientes`, `IdIngrediente`,
 --
 
 CREATE TABLE `roles` (
-  `IdRol` int(11) NOT NULL,
+  `IdRol` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -196,7 +196,7 @@ CREATE TABLE `roles` (
 --
 
 CREATE TABLE `tarjetas` (
-  `IdTarjeta` int(11) NOT NULL,
+  `IdTarjeta` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(255) NOT NULL,
   `Direccion` varchar(255) NOT NULL,
   `NumeroTarjeta` varchar(255) NOT NULL,
@@ -211,7 +211,7 @@ CREATE TABLE `tarjetas` (
 --
 
 CREATE TABLE `usuarios` (
-  `IdUsuario` int(11) NOT NULL,
+  `IdUsuario` int(11) NOT NULL ,
   `Correo` varchar(255) NOT NULL,
   `Contraseña` varchar(255) NOT NULL,
   `Nombre` varchar(255) NOT NULL,

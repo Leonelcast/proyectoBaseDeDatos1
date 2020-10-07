@@ -1,7 +1,7 @@
 <?php
 if(isset($_GET["IdIngrediente"]) && !empty(trim($_GET["IdIngrediente"]))){
 
-    require_once "config.php";
+    require_once "../Config/config.php";
 
     $sql = "SELECT * FROM ingredientes WHERE IdIngrediente = ?";
     

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <link href="./index.css" rel="stylesheet">
+    <link href="../Ingredientes/index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
@@ -34,36 +34,44 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Ingredientes</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Agregar nuevo Ingrediente</a>
+                        <h2 class="pull-left">Platillo</h2>
+                        <a href="createPlatillo.php" class="btn btn-success pull-right">Agregar nuevo Platillo</a>
                     </div>
                     <?php
                     require_once "../Config/config.php";
                     
-                    $sql = "SELECT * FROM ingredientes";
+                    $sql = "SELECT * FROM platillos";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Inventario</th>";
-                                        echo "<th>Ingrediente</th>";
+                                        echo "<th>Precio</th>";
+                                        echo "<th>IdMenu</th>";
+                                        echo "<th>Destacado</th>";
+                                        echo "<th>Habilitado</th>";
+                                        echo "<th>Descripcion</th>";
+                                        echo "<th>Fotografia</th>";
                                         echo "<th>Editar/Eliminar</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['IdIngrediente'] . "</td>";
-                                        echo "<td>" . $row['Inventario'] . "</td>";
-                                        echo "<td>" . $row['Ingrediente'] . "</td>";
+                                        echo "<td>" . $row['IdPlatillos'] . "</td>";
+                                        echo "<td>" . $row['precio'] . "</td>";
+                                        echo "<td>" . $row['IdMenu'] . "</td>";
+                                        echo "<td>" . $row['destacado'] . "</td>";
+                                        echo "<td>" . $row['habilitado'] . "</td>";
+                                        echo "<td>" . $row['Descripcion'] . "</td>";
+                                        echo "<td>" . $row['Fotografia'] . "</td>";
                                         echo "<td>";
                                        
                                         
-                                            echo "<a href='read.php?IdIngrediente=". $row['IdIngrediente'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='update.php?IdIngrediente=". $row['IdIngrediente'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='delete.php?IdIngrediente=". $row['IdIngrediente'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='read.php?IdPlatillos=". $row['IdPlatillos'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='update.php?IdPlatillos=". $row['IdPlatillos'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='delete.php?IdPlatillos=". $row['IdPlatillos'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once "config.php";
+require_once "../Config/config.php";
  
 $Inventario = $Ingrediente  = "";
 $Inventario_err = $Ingrediente_err = "";
