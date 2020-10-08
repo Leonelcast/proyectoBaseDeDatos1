@@ -27,25 +27,70 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     
     if(empty($IdIngrediente_err) && empty($Inventario_err) && empty($Ingrediente_err)){
-      
-        $sql = "INSERT INTO ingredientes (IdIngrediente, Inventario, Ingrediente) VALUES (0, ?, ?)";
-         
-        if($stmt = mysqli_prepare($link, $sql)){
-            mysqli_stmt_bind_param($stmt,"ss", $param_Inventario, $param_Ingrediente);
+      $sql = "INSERT INTO ingredientes (IdIngrediente, Inventario, Ingrediente) VALUES (0, ?, ?)";
+
+        $sqlCheck = "SELECT * from ingredientes WHERE Ingrediente = ?";
+
+        $sqlUpdate = "UPDATE ingredientes set Inventario = ? where Ingrediente = ?";
+
+        if($stmtCheck = mysqli_prepare($link, $sqlCheck)) {
+            mysqli_stmt_bind_param($stmtCheck,"s", $param_Ingrediente);
             
-      
-            $param_Inventario = $Inventario;
             $param_Ingrediente = $Ingrediente;
-           
-            if(mysqli_stmt_execute($stmt)){
-                header("location: Ingrediente.php");
-                exit();
+        
+            if(mysqli_stmt_execute($stmtCheck)){
+                $result = mysqli_stmt_get_result($stmtCheck);
+                if(mysqli_num_rows($result) > 0){
+                  $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                    if($stmtUpdate = mysqli_prepare($link, $sqlUpdate)){
+                      
+                        mysqli_stmt_bind_param($stmtUpdate,"ss", $param_Inventario, $param_Ingrediente);
+                        
+                      
+                        $param_Inventario = $Inventario + $row["Inventario"];
+                        $param_Ingrediente = $Ingrediente;
+                        
+                        
+                        if(mysqli_stmt_execute($stmtUpdate)){
+                            header("location: Ingrediente.php");
+                            exit();
+                        } else{
+                            echo "Something went wrong. Please try again later.";
+                        }
+                    }
+                     
+                    // Close statement
+                    mysqli_stmt_close($stmtUpdate);
+                } else {
+                    if($stmt = mysqli_prepare($link, $sql)){
+                        // Bind variables to the prepared statement as parameters
+                        mysqli_stmt_bind_param($stmt,"ss", $param_Inventario, $param_Ingrediente);
+                        
+                        // Set parameters
+                        $param_Inventario = $Inventario;
+                        $param_Ingrediente = $Ingrediente;
+                        
+                        // Attempt to execute the prepared statement
+                        if(mysqli_stmt_execute($stmt)){
+                            // Records created successfully. Redirect to landing page
+                            header("location: Ingrediente.php");
+                            exit();
+                        } else{
+                            echo "Something went wrong. Please try again later.";
+                        }
+                    }
+                     
+                    // Close statement
+                    mysqli_stmt_close($stmt);
+                }
+
+                // Close statement
+                mysqli_stmt_close($stmtCheck);
             } else{
                 echo "Something went wrong. Please try again later.";
+                exit();
             }
         }
-         
-        mysqli_stmt_close($stmt);
     }
     
     mysqli_close($link);
@@ -57,7 +102,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Create Record</title>
-    <link href="./index.css" rel="stylesheet">
+    <link href="../Style/index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>

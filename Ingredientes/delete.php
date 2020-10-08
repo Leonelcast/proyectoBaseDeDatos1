@@ -45,7 +45,7 @@ if(isset($_POST["IdIngrediente"]) && !empty($_POST["IdIngrediente"])){
 <head>
     <meta charset="UTF-8">
     <title>View Record</title>
-    <link href="./index.css" rel="stylesheet">
+    <link href="../Style/index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
   
     </style>

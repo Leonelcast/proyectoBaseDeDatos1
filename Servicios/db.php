@@ -242,35 +242,47 @@ class DB {
 		* @param string $username is username
 		* @param string $pass is the user password
 		*/
-		//Response var
-		$data = array();
-		//Prepare SQL
-		$user = $this->db->prepare("SELECT IdUsuario from usuarios where Correo = :username AND Contraseña = :pass limit 1");
-		//Bind parameters of SQL
-		$user->bindParam(':username', $username);
-		$user->bindParam(':pass',$pass);
-		//Execute and get result info.
-		$qsent = $user->execute();
-		$qerror = $user->errorInfo();
-		if($qerror[0]=='00000'){
-			//If is successuful verify if exist user
-			$row = $user->fetch();
-			error_log(json_encode($row));
-			if($row)
-			{
-			    $data['Result'] = "OK";
-			    $data['Detail'] = $qerror;
-			    $_SESSION['login'] = true;
-			    return $data;
+	//Response var
+	$data = array();
+	//Prepare SQL
+
+	$sql = "SELECT IdUsuario, IdRol, Contraseña from usuarios where Correo = :username  limit 1";
+	$user = $this->db->prepare($sql);
+
+	//Bind parameters of SQL
+	$user->bindParam(':username', $username);
+	//Execute and get result info.
+	$qsent = $user->execute();
+	$qerror = $user->errorInfo();
+	if($qerror[0]=='00000'){
+		//If is successuful verify if exist user
+		$row = $user->fetch();
+		error_log(json_encode($row));
+		if($row)
+		{   $data['Result'] = "OK";
+			$data['Message'] = "Login correcto";
+			$data['Detail'] = $qerror;
+			$passw = $row['Contraseña'];
+			if(password_verify($passw, $pass)){
+				$_SESSION['login'] = true;
+				$_SESSION['rol'] = $row['IdRol'];
 			}else{
 				$data['Result'] = "ERROR";
-				$data['Detail'] = $qerror;
+				$data['Message'] = "Usuario o password incorrectos";
+			}
+			return $data;
+		}else{
+			$data['Result'] = "ERROR";
+			$data['Message'] = "Usuario o password incorrectos";
+			$data['Detail'] = $qerror;
 				return $data;
 			}
-		}else{	
+		}else{
 			//If fail return generic error message
 			$data['Detail'] = $qerror;
 			$data['Result'] = "ERROR";
+
+			error_log(json_encode($data));
 			return $data;
 		}
 	}

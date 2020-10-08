@@ -1,41 +1,39 @@
 <?php
-
-if(isset($_POST["IdIngrediente"]) && !empty($_POST["IdIngrediente"])){
-    echo '<script>';
-    echo 'console.log('. json_encode($IdIngrediente, JSON_HEX_TAG) .')';
-    echo '</script>';
-   
+// Process delete operation after confirmation
+if(isset($_POST["IdPlatillos"]) && !empty($_POST["IdPlatillos"])){
+    // Include config file
     require_once "../Config/config.php";
     
-    $sql = "DELETE FROM ingredientes WHERE IdIngrediente = ?";
+    // Prepare a delete statement
+    $sql = "DELETE FROM platillos WHERE IdPlatillos = ?";
     
-    if($stmt = mysqli_prepare($link, $sql)){ 
-      
-  
-        mysqli_stmt_bind_param($stmt, "i", $param_IdIngrediente);
+    if($stmt = mysqli_prepare($link, $sql)){
+        // Bind variables to the prepared statement as parameters
+        mysqli_stmt_bind_param($stmt, "i", $param_IdPlatillos);
         
- 
-        $param_IdIngrediente = trim($_POST["IdIngrediente"]);
+        // Set parameters
+        $param_IdPlatillos = trim($_POST["IdPlatillos"]);
         
-
+        // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
-         
-            header("location: Ingrediente.php");
+            // Records deleted successfully. Redirect to landing page
+            header("location: platillo.php");
             exit();
         } else{
             echo "Oops! Something went wrong. Please try again later.";
         }
     }
      
-
+    // Close statement
     mysqli_stmt_close($stmt);
     
-  
+    // Close connection
     mysqli_close($link);
 } else{
-   
-    if(empty(trim($_GET["IdIngrediente"]))){
-        header("location: error.php");
+    // Check existence of id parameter
+    if(empty(trim($_GET["IdPlatillos"]))){
+        // URL doesn't contain id parameter. Redirect to error page
+        header("location: errorPlatillo.php");
         exit();
     }
 }
@@ -45,9 +43,12 @@ if(isset($_POST["IdIngrediente"]) && !empty($_POST["IdIngrediente"])){
 <head>
     <meta charset="UTF-8">
     <title>View Record</title>
-    <link href="./index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-  
+    <style type="text/css">
+        .wrapper{
+            width: 500px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -60,11 +61,11 @@ if(isset($_POST["IdIngrediente"]) && !empty($_POST["IdIngrediente"])){
                     </div>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="alert alert-danger fade in">
-                            <input type="hidden" name="IdIngrediente" value="<?php echo trim($_GET["IdIngrediente"]); ?>"/>
-                            <p>¿Estas seguro de eliminar este dato?</p><br>
+                            <input type="hidden" name="IdPlatillos" value="<?php echo trim($_GET["IdPlatillos"]); ?>"/>
+                            <p>Are you sure you want to delete this record?</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="Ingrediente.php" class="btn btn-default">No</a>
+                                <a href="platillo.php" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>

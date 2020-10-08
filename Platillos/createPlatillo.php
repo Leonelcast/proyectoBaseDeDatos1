@@ -1,10 +1,11 @@
-<?php
+
+ <?php
 
 require_once "../Config/config.php";
  
 
-$IdPlatillos = $precio = $destacado = $habilitado = $Descripcion = $Fotografia = "";
-$IdPlatillos_err = $precio_err = $destacado_err = $habilitado_err = $Descripcion_err = $Fotografia_err = "";
+$IdPlatillos = $precio = $IdMenu = $destacado = $habilitado = $Descripcion = /*$Fotografia = */"";
+$IdPlatillos_err = $precio_err =  $IdMenu_err = $destacado_err = $habilitado_err = $Descripcion_err =/* $Fotografia_err =*/ "";
  
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -16,49 +17,61 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $precio= $input_precio;
     }
-    
 
-    $input_destacado= trim($_POST["destacado"]);
+
+    $input_IdMenu = trim($_POST["IdMenu"]);
+    if(empty($input_IdMenu)){
+        $IdMenu_err = "Please enter the menuId amount.";     
+    } elseif(!ctype_digit($input_IdMenu)){
+        $IdMenu_err = "Please enter a positive integer value.";
+    } else{
+        $IdMenu= $input_IdMenu;
+    }
+    
+    $destacado =$_POST['destacado']; 
+    $habilitado =$_POST['habilitado']; 
+
+   /* $input_destacado= trim($_POST["destacado"]);
     if(empty($input_destacado)){
         $destacado_err = "Please enter an destacado.";     
     } else{
         $destacado = $input_destacado;
-    }
+    }*/
 
-    $input_habilitado= trim($_POST["habilitado"]);
+    /*$input_habilitado= trim($_POST["habilitado"]);
     if(empty($input_habilitado)){
-        $habilitado_err = "Please enter an habilitado.";     
+        $habilitado = $input_habilitado;     
     } else{
-        $habilitado = $input_habilitado;
-    }
+        
+    }*/
     $input_Descripcion= trim($_POST["Descripcion"]);
     if(empty($input_Descripcion)){
         $Descripcion_err = "Please enter an destacado.";     
     } else{
         $Descripcion = $input_Descripcion;
     }
-    $input_Fotografia= trim($_POST["Fotografia"]);
+  /*  $input_Fotografia= trim($_POST["Fotografia"]);
     if(empty($input_Fotografia)){
         $Fotografia_err = "Please enter an Fotografia.";     
     } else{
         $Fotografia = $input_Fotografia;
-    }
+    }*/
     
     
-    if(empty($IdPlatillos_err) && empty($precio_err) && empty($destacado_err)  && empty($habilitado_err) 
-     && empty($Descripcion_err)  && empty($Fotografia_err)){
+    if(empty($IdPlatillos_err) &&  empty($precio_err)  && empty($IdMenu_err)  && empty($destacado_err)  && empty($habilitado_err) 
+     && empty($Descripcion_err) /* && empty($Fotografia_err)*/){
       
-        $sql = "INSERT INTO platillos (IdPlatillos, precio, destacado, habilitado, Descripcion, Fotografia  ) VALUES (0, ?, ?)";
+        $sql = "INSERT INTO platillos(IdPlatillos, precio, IdMenu, destacado, habilitado, Descripcion ) VALUES (0, ?, ?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
-            mysqli_stmt_bind_param($stmt,"sssss", $param_precio, $param_destacado, $param_habilitado, $param_Descripcion, $param_Fotografia);
-            
-      
+        mysqli_stmt_bind_param($stmt,"iiiis", $param_precio, $param_IdMenu, $param_destacado, $param_habilitado, $param_Descripcion /*$param_Fotografia*/);
+        
             $param_precio = $precio;
+            $param_IdMenu   = $IdMenu;
             $param_destacado = $destacado;
             $param_habilitado = $habilitado;
             $param_Descripcion = $Descripcion;
-            $param_Fotografia = $Fotografia;
+           /* $param_Fotografia = $Fotografia;*/
             if(mysqli_stmt_execute($stmt)){
                 header("location: platillo.php");
                 exit();
@@ -73,13 +86,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     mysqli_close($link);
 }
 ?>
- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Create Record</title>
-    <link href="../Ingredientes/index.css" rel="stylesheet">
+    <link href="../Style/index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -118,28 +130,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <input type="number" name="precio" class="form-control" placeholder="Precio" value="<?php echo $precio; ?>">
                             <span class="help-block"><?php echo $precio_err;?></span>
                         </div>
+                        <div class="form-group <?php echo (!empty($IdMenu_err)) ? 'has-error' : ''; ?>">
+                            <label for="precio" class="sr-only">IdMenu</label>
+                            <input type="number" name="IdMenu" class="form-control" placeholder="IdMenu" value="<?php echo $IdMenu; ?>">
+                            <span class="help-block"><?php echo $IdMenu_err;?></span>
+                        </div>
          
             <div class="form-group <?php echo (!empty($destacado_err)) ? 'has-error' : ''; ?>">
                             <label class="sr-only">destacado</label>
-                            <input type="number" name="destacado" class="form-control"  placeholder="Destacado utilizar 0 y 1" value="<?php echo $destacado; ?>">
+                            <input type="text" name="destacado" class="form-control"  placeholder="Destacado utilizar 0 y 1" value="<?php echo $destacado; ?>">
                             <span class="help-block"><?php echo $destacado_err;?></span>
                         </div>
-                        <div class="form-group <?php echo (!empty($habilitado_err)) ? 'has-error' : ''; ?>">
+                        <div class="form-group">
                             <label for="habilitado" class="sr-only">habilitado</label>
-                            <input type="number" name="habilitado" class="form-control" placeholder="Habilitado Usar 0 y 1" value="<?php echo $habilitado; ?>">
-                            <span class="help-block"><?php echo $habilitado_err;?></span>
+                            <input type="text" name="habilitado" class="form-control" placeholder="Habilitado Usar 0 y 1" value="<?php echo $habilitado; ?>">
                         </div>
-                      
-                        <div class="form-group <?php echo (!empty($Descripcion_err)) ? 'has-error' : ''; ?>">
-                            <label class="sr-only">Ingrediente</label>
+                        
+                        <div class="form-group ">
+                            <label class="sr-only">Descripcion</label>
                             <input type="text" name="Descripcion" class="form-control"  placeholder=" Descripcion" value="<?php echo $Descripcion; ?>">
-                            <span class="help-block"><?php echo $Descripcion_err;?></span>
                         </div>
-                        <div class="form-group <?php echo (!empty($Fotografia_err)) ? 'has-error' : ''; ?>">
-                            <label class="sr-only">Fotografia</label>
-                            <input type="file" name="Fotografia" class="form-control"  placeholder=" Fotografia" value="<?php echo $Fotografia; ?>">
-                            <span class="help-block"><?php echo $Fotografia_err;?></span>
-                        </div>
+                
+                  
                         <input type="submit" class="btn btn-primary" value="Agregar">
                         <a href="platillo.php" class="btn btn-default">Cancelar</a>
           </form>
