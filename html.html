@@ -1,0 +1,75 @@
+<?php
+
+require_once "../Config/config.php";
+ 
+
+$IdPlatillosIngredientes = $IdIngrediente = $IdPlatillo = $Descripcion = $Cantidad =  "";
+$IdPlatillosIngredientes_err = $IdIngrediente_err = $IdPlatillo_err = $Descripcion_err = $Cantidad_err = "";
+ 
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    $input_IdIngrediente= trim($_POST["IdIngrediente"]);
+    if(empty($input_IdIngrediente)){
+        $IdIngrediente_err = "Please enter the IdIngrediente amount.";     
+    } elseif(!ctype_digit($input_IdIngrediente)){
+        $Inventario_err = "Please enter a positive integer value.";
+    } else{
+        $IdIngrediente= $input_IdIngrediente;
+    }
+
+    $input_IdPlatillo= trim($_POST["IdPlatillo"]);
+    if(empty($input_IdPlatillo)){
+        $IdPlatillo_err = "Please enter the IdPlatillo amount.";     
+    } elseif(!ctype_digit($input_IdPlatillo)){
+        $Inventario_err = "Please enter a positive integer value.";
+    } else{
+        $IdIdPlatillo= $input_IdPlatillo;
+    }
+    
+
+    $input_Ingrediente= trim($_POST["IdPlatillo"]);
+    if(empty($input_Ingrediente)){
+        $Ingrediente_err = "Please enter an Ingrediente.";     
+    } else{
+        $Ingrediente = $input_Ingrediente;
+    }
+    
+    $input_Descripcion= trim($_POST["Descripcion"]);
+    if(empty($input_Descripcion)){
+        $Descripcion_err = "Please enter an Descripcion.";     
+    } else{
+        $Descripcion = $input_Descripcion;
+    }
+
+    $input_Cantidad= trim($_POST["Cantidad"]);
+    if(empty($input_Cantidad)){
+        $Cantidad_err = "Please enter an Cantidad.";     
+    } else{
+        $Cantidad = $input_Cantidad;
+    }
+    
+    if(empty($IdPlatillosIngredientes_err) && empty($IdIngrediente_err) && empty($IdPlatillo_err) && empty($Descripcion_err) && empty($Cantidad_err)){
+      $sql = "INSERT INTO IdPlatillosIngredientes (IdIngrediente, IdPlatillo, Descripcion, Cantidad) VALUES (0, ?, ?, ?, ?)";
+         if($stmt = mysqli_prepare($link, $sql)){
+         mysqli_stmt_bind_param($stmt,"iiiss", $param_IdIngrediente, $param_IdPlatillo, $param_Descripcion, $param_Cantidad);
+         
+             $param_IdIngrediente = $IdIngrediente;
+             $param_IdPlatillo   = $IdPlatillo;
+             $param_Descripcion = $Descripcion;
+             $param_Cantidad = $Cantidad;
+        
+             if(mysqli_stmt_execute($stmt)){
+                 header("location: PlatilloxIngrediente.php");
+                 exit();
+             } else{
+                 echo "Something went wrong. Please try again later.";
+             }
+         }
+          
+         mysqli_stmt_close($stmt);
+     }
+     
+     mysqli_close($link)
+}
+?>

@@ -1,51 +1,17 @@
 <?php
+// Initialize the session
 session_start();
 if(!isset($_SESSION['IdRol'])){
   header('location: ../Login/login.php');
 }else{
-  if($_SESSION['IdRol'] !=1 && $_SESSION['IdRol'] !=2 ){
-    header('location: ../Login/login.php');
+  if($_SESSION['IdRol'] !=3){
+    header('location: ../Login/welcome.php');
   }
 
 }
 
 ?>
-<?php
-if(isset($_GET["IdIngrediente"]) && !empty(trim($_GET["IdIngrediente"]))){
 
-    require_once "../Config/config.php";
-
-    $sql = "SELECT * FROM ingredientes WHERE IdIngrediente = ?";
-    
-    if($stmt = mysqli_prepare($link, $sql)){
-        mysqli_stmt_bind_param($stmt, "i", $param_IdIngrediente); 
-        $param_IdIngrediente = trim($_GET["IdIngrediente"]);
-        
-        if(mysqli_stmt_execute($stmt)){
-            $result = mysqli_stmt_get_result($stmt);
-    
-            if(mysqli_num_rows($result) == 1){
-                $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-                $Inventario = $row["Inventario"];
-                $Ingrediente = $row["Ingrediente"];
-            } else{
-                header("location: error.php");
-                exit();
-            }
-            
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-        }
-    }
-
-    mysqli_stmt_close($stmt);
-    
-    mysqli_close($link);
-} else{
-    header("location: error.php");
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,7 +27,7 @@ if(isset($_GET["IdIngrediente"]) && !empty(trim($_GET["IdIngrediente"]))){
 <header>
     <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="./Home.html">Pizza Planeta</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-strong="Toggle navigation">
         <span class="navbar-toggler-icon"></span> </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
@@ -84,17 +50,36 @@ if(isset($_GET["IdIngrediente"]) && !empty(trim($_GET["IdIngrediente"]))){
                 <form class="form-signin" id="form">
            <div class="page-header">
            <center> <img src="../img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
-                       <center> <h3>Ingredientes</h3> </center>
+                       <center> <h3>Usuario</h3> </center>
                     </div>
                     <div class="form-group">
-                        <label>Inventario</label>
-                        <p class="form-control-static"><?php echo $row["Inventario"]; ?></p>
+                    
+                <center><strong>Correo</strong></center>        
+                    <center> <p class="form-control-static"><?php echo htmlspecialchars($_SESSION["Correo"]); ?></p></center>    
                     </div>
+                   
+               <center>    <div class="form-group">
+                        <strong>Nombre</strong>
+                        <p class="form-control-static" name="Nombre"><?php echo htmlspecialchars($_SESSION["Nombre"]); ?></p>
+                    </div></center> 
+                    <center>
                     <div class="form-group">
-                        <label>Ingrediente</label>
-                        <p class="form-control-static"><?php echo $row["Ingrediente"]; ?></p>
-                    </div>
-                        <p><a href="Ingrediente.php" class="btn btn-primary">Back</a></p>
+                    <strong>Apellido</strong>
+                        <p class="form-control-static" name="Apellido"><?php echo htmlspecialchars($_SESSION["Apellido"]); ?></p></center> 
+                    
+                        <center> <p>
+     <a href="#" title="Placeholder link title" class="text-decoration-none">
+          Agrega tu tarjeta de Credito
+          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-credit-card-2-back" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M14 3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z"></path>
+  <path d="M11 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zM1 9h14v2H1V9z"></path>
+</svg>
+        </a>
+      </p></center>   
+      <br>
+                        <p><a href="../Login/welcome.php" class="btn btn-primary">Back</a></p>
+                        
+      
           </form>
           <br>
 

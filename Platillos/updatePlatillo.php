@@ -1,22 +1,29 @@
 <?php
+session_start();
+if(!isset($_SESSION['IdRol'])){
+  header('location: ../Login/login.php');
+}else{
+  if($_SESSION['IdRol'] !=1){
+    header('location: ../Login/login.php');
+  }
+
+}
+
+?>
+
+<?php
 
 require_once "../Config/config.php";
  
-$IdPlatillos = $precio = $IdMenu = $destacado = $habilitado = $Descripcion = /*$Fotografia = */"";
-$IdPlatillos_err = $precio_err =  $IdMenu_err = $destacado_err = $habilitado_err = $Descripcion_err =/* $Fotografia_err =*/ "";
+$precio = $IdMenu = $destacado = $habilitado = $Descripcion = /*$Fotografia = */"";
+$precio_err =  $IdMenu_err = $destacado_err = $habilitado_err = $Descripcion_err =/* $Fotografia_err =*/ "";
  
 
 if(isset($_POST["IdPlatillos"]) && !empty($_POST["IdPlatillos"])){
 
+    $IdPlatillos = $_POST["IdPlatillos"];
 
-    $input_precio= trim($_POST["precio"]);
-    if(empty($input_precio)){
-        $precio_err = "Please enter the precio amount.";     
-    } elseif(!ctype_digit($input_precio)){
-        $precioo_err = "Please enter a positive integer value.";
-    } else{
-        $precio = $input_precio;
-    }
+    $precio =$_POST['precio']; 
 
     $input_IdMenu = trim($_POST["IdMenu"]);
     if(empty($input_IdMenu)){
@@ -44,21 +51,21 @@ if(isset($_POST["IdPlatillos"]) && !empty($_POST["IdPlatillos"])){
     }*/
     
  
-    if(empty($IdPlatillos_err) &&  empty($precio_err) && empty($IdMenu_err)  && empty($destacado_err)  && empty($habilitado_err) 
+    if(empty($precio_err) && empty($IdMenu_err)  && empty($destacado_err)  && empty($habilitado_err) 
     && empty($Descripcion_err) /* && empty($Fotografia_err)*/ ){
  
-        $sql = "UPDATE platillos SET precio=?, IdMenu=?, destacado=?, habilitado=?, Descripcion=?/*, Fotografia=?*/ WHERE IdPlatillos=?";
+        $sql = "UPDATE platillos SET precio=?, IdMenu=?, destacado=?, habilitado=?, Descripcion=? WHERE IdPlatillos=?";
          
         if($stmt = mysqli_prepare($link, $sql)){
         
-            mysqli_stmt_bind_param($stmt,"iiiis", $param_precio, $param_IdMenu, $param_destacado, $param_habilitado, $param_Descripcion /*$param_Fotografia*/);
+            mysqli_stmt_bind_param($stmt,"iiiisi", $param_precio, $param_IdMenu, $param_destacado, $param_habilitado, $param_Descripcion, $IdPlatillos);
           
             $param_precio = $precio;
             $param_IdMenu   = $IdMenu;
             $param_destacado = $destacado;
             $param_habilitado = $habilitado;
             $param_Descripcion = $Descripcion;
-           /* $param_Fotografia = $Fotografia;*/
+            $param_IdPlatillos = $IdPlatillos;
             if(mysqli_stmt_execute($stmt)){
   
                 header("location: platillo.php");

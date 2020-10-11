@@ -1,14 +1,14 @@
 <?php
-session_start();
+/*ession_start();
 if(!isset($_SESSION['IdRol'])){
   header('location: ../Login/login.php');
 }else{
-  if($_SESSION['IdRol'] !=1 && $_SESSION['IdRol'] !=2 ){
+  if($_SESSION['IdRol'] !=1 ){
     header('location: ../Login/login.php');
   }
 
 }
-
+*/
 ?>
 
 <!DOCTYPE html>
@@ -47,36 +47,39 @@ if(!isset($_SESSION['IdRol'])){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Ingredientes</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Agregar nuevo Ingrediente</a>
+                        <h2 class="pull-left">Relacion Platillo con Ingredientes</h2>
+                        <a href="create.php" class="btn btn-success pull-right">Relacionar ingredientes para el platillo</a>
                     </div>
                     <?php
                     require_once "../Config/config.php";
                     
-                    $sql = "SELECT * FROM ingredientes";
+                    $sql = "SELECT * FROM platillosingredientes";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Inventario</th>";
-                                        echo "<th>Ingrediente</th>";
+                                        echo "<th>IdIngrediente</th>";
+                                        echo "<th>IdPlatillo</th>";
+                                        echo "<th>Descripcion</th>";
+                                        echo "<th>Cantidad</th>";
                                         echo "<th>Editar/Eliminar</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
+                                        echo "<td>" . $row['IdPlatillosIngredientes'] . "</td>";
                                         echo "<td>" . $row['IdIngrediente'] . "</td>";
-                                        echo "<td>" . $row['Inventario'] . "</td>";
-                                        echo "<td>" . $row['Ingrediente'] . "</td>";
+                                        echo "<td>" . $row['IdPlatillo'] . "</td>";
+                                        echo "<td>" . $row['Descripcion'] . "</td>";
+                                        echo "<td>" . $row['Cantidad'] . "</td>";
                                         echo "<td>";
                                        
                                         
-                                            echo "<a href='read.php?IdIngrediente=". $row['IdIngrediente'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='update.php?IdIngrediente=". $row['IdIngrediente'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='delete.php?IdIngrediente=". $row['IdIngrediente'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                           echo "<a href='update.php?IdPlatillosIngredientes=". $row['IdPlatillosIngredientes'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='delete.php?IdPlatillosIngredientes=". $row['IdPlatillosIngredientes'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

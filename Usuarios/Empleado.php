@@ -1,51 +1,17 @@
 <?php
+// Initialize the session
 session_start();
 if(!isset($_SESSION['IdRol'])){
   header('location: ../Login/login.php');
 }else{
-  if($_SESSION['IdRol'] !=1 && $_SESSION['IdRol'] !=2 ){
-    header('location: ../Login/login.php');
+  if($_SESSION['IdRol'] !=2){
+    header('location: ../Login/welcome.php');
   }
 
 }
 
 ?>
-<?php
-if(isset($_GET["IdIngrediente"]) && !empty(trim($_GET["IdIngrediente"]))){
 
-    require_once "../Config/config.php";
-
-    $sql = "SELECT * FROM ingredientes WHERE IdIngrediente = ?";
-    
-    if($stmt = mysqli_prepare($link, $sql)){
-        mysqli_stmt_bind_param($stmt, "i", $param_IdIngrediente); 
-        $param_IdIngrediente = trim($_GET["IdIngrediente"]);
-        
-        if(mysqli_stmt_execute($stmt)){
-            $result = mysqli_stmt_get_result($stmt);
-    
-            if(mysqli_num_rows($result) == 1){
-                $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-                $Inventario = $row["Inventario"];
-                $Ingrediente = $row["Ingrediente"];
-            } else{
-                header("location: error.php");
-                exit();
-            }
-            
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-        }
-    }
-
-    mysqli_stmt_close($stmt);
-    
-    mysqli_close($link);
-} else{
-    header("location: error.php");
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,7 +27,7 @@ if(isset($_GET["IdIngrediente"]) && !empty(trim($_GET["IdIngrediente"]))){
 <header>
     <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="./Home.html">Pizza Planeta</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-strong="Toggle navigation">
         <span class="navbar-toggler-icon"></span> </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
@@ -84,17 +50,36 @@ if(isset($_GET["IdIngrediente"]) && !empty(trim($_GET["IdIngrediente"]))){
                 <form class="form-signin" id="form">
            <div class="page-header">
            <center> <img src="../img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
-                       <center> <h3>Ingredientes</h3> </center>
+                       <center> <h3>Empleado</h3> </center>
                     </div>
                     <div class="form-group">
-                        <label>Inventario</label>
-                        <p class="form-control-static"><?php echo $row["Inventario"]; ?></p>
+                    
+                <center><strong>Correo</strong></center>        
+                    <center> <p class="form-control-static"><?php echo htmlspecialchars($_SESSION["Correo"]); ?></p></center>    
                     </div>
+                   
+               <center>    <div class="form-group">
+                        <strong>Nombre</strong>
+                        <p class="form-control-static" name="Nombre"><?php echo htmlspecialchars($_SESSION["Nombre"]); ?></p>
+                    </div></center> 
+                    <center>
                     <div class="form-group">
-                        <label>Ingrediente</label>
-                        <p class="form-control-static"><?php echo $row["Ingrediente"]; ?></p>
-                    </div>
-                        <p><a href="Ingrediente.php" class="btn btn-primary">Back</a></p>
+                    <strong>Apellido</strong>
+                        <p class="form-control-static" name="Apellido"><?php echo htmlspecialchars($_SESSION["Apellido"]); ?></p></center> 
+                    
+                        <a href="../Ingredientes/Ingrediente.php">   <button type="button" class="btn btn-outline-primary">
+        Editar Ingredientes
+          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+</svg>
+        </button></a> 
+        </a>
+    <br>  
+      <br>
+                        <p><a href="../Login/welcome.php" class="btn btn-primary">Back</a></p>
+                        
+      
           </form>
           <br>
 

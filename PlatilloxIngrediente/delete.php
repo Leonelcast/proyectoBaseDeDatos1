@@ -1,39 +1,37 @@
 <?php
-session_start();
+/*session_start();
 if(!isset($_SESSION['IdRol'])){
   header('location: ../Login/login.php');
 }else{
-  if($_SESSION['IdRol'] !=1 && $_SESSION['IdRol'] !=2 ){
+  if($_SESSION['IdPlatillosIngredientes'] !=1 && $_SESSION['IdPlatillosIngredientes'] !=2 ){
     header('location: ../Login/login.php');
   }
 
 }
-
+*/
 ?>
 
 <?php
 
-if(isset($_POST["IdIngrediente"]) && !empty($_POST["IdIngrediente"])){
-    echo '<script>';
-    echo 'console.log('. json_encode($IdIngrediente, JSON_HEX_TAG) .')';
-    echo '</script>';
+if(isset($_POST["IdPlatillosIngredientes"]) && !empty($_POST["IdPlatillosIngredientes"])){
+   
    
     require_once "../Config/config.php";
     
-    $sql = "DELETE FROM ingredientes WHERE IdIngrediente = ?";
+    $sql = "DELETE FROM platillosingredientes WHERE IdPlatillosIngredientes = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){ 
       
   
-        mysqli_stmt_bind_param($stmt, "i", $param_IdIngrediente);
+        mysqli_stmt_bind_param($stmt, "i", $param_IdPlatillosIngredientes);
         
  
-        $param_IdIngrediente = trim($_POST["IdIngrediente"]);
+        $param_IdPlatillosIngredientes = trim($_POST["IdPlatillosIngredientes"]);
         
 
         if(mysqli_stmt_execute($stmt)){
          
-            header("location: Ingrediente.php");
+            header("location: PlatilloxIngrediente.php");
             exit();
         } else{
             echo "Oops! Something went wrong. Please try again later.";
@@ -47,7 +45,7 @@ if(isset($_POST["IdIngrediente"]) && !empty($_POST["IdIngrediente"])){
     mysqli_close($link);
 } else{
    
-    if(empty(trim($_GET["IdIngrediente"]))){
+    if(empty(trim($_GET["IdPlatillosIngredientes"]))){
         header("location: error.php");
         exit();
     }
@@ -73,11 +71,11 @@ if(isset($_POST["IdIngrediente"]) && !empty($_POST["IdIngrediente"])){
                     </div>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="alert alert-danger fade in">
-                            <input type="hidden" name="IdIngrediente" value="<?php echo trim($_GET["IdIngrediente"]); ?>"/>
+                            <input type="hidden" name="IdPlatillosIngredientes" value="<?php echo trim($_GET["IdPlatillosIngredientes"]); ?>"/>
                             <p>¿Estas seguro de eliminar este dato?</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="Ingrediente.php" class="btn btn-default">No</a>
+                                <a href="Platilloxingrediente.php" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>
