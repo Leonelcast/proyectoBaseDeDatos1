@@ -1,15 +1,16 @@
 <?php
-session_start();
+/*session_start();
 if(!isset($_SESSION['IdRol'])){
   header('location: ../Login/login.php');
 }else{
-  if($_SESSION['IdRol'] !=1){
+  if($_SESSION['IdRol'] !=1 && $_SESSION['IdRol'] !=2 ){
     header('location: ../Login/login.php');
   }
 
 }
-
+*/
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,45 +47,33 @@ if(!isset($_SESSION['IdRol'])){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Platillo</h2>
-        <a href="../PlatilloxIngrediente/PlatilloxIngrediente.php" class="btn btn-success pull-right" style="margin-left: 10px">Editar relacion con Ingredientes</a>
-                        <a href="createPlatillo.php" class="btn btn-success pull-right">Agregar nuevo Platillo</a>
+                        <h2 class="pull-left">Categorias</h2>
+                        <a href="create.php" class="btn btn-success pull-right">Agregar nuevo Categoria</a>
                     </div>
                     <?php
                     require_once "../Config/config.php";
                     
-                    $sql = "SELECT * FROM platillos";
+                    $sql = "SELECT * FROM categorias";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Precio</th>";
-                                        echo "<th>IdMenu</th>";
-                                        echo "<th>Destacado</th>";
-                                        echo "<th>Habilitado</th>";
-                                        echo "<th>Descripcion</th>";
-                                        echo "<th>Fotografia</th>";
+                                        echo "<th>Tipo</th>";
                                         echo "<th>Editar/Eliminar</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['IdPlatillos'] . "</td>";
-                                        echo "<td>" . $row['precio'] . "</td>";
-                                        echo "<td>" . $row['IdMenu'] . "</td>";
-                                        echo "<td>" . $row['destacado'] . "</td>";
-                                        echo "<td>" . $row['habilitado'] . "</td>";
-                                        echo "<td>" . $row['Descripcion'] . "</td>";
-                                       
-
-                                        echo "<td>". "<img src='data:image/jpeg;base64," .base64_encode($row['Fotografia'])."' />". "</td>";
+                                        echo "<td>" . $row['IdCategoria'] . "</td>";
+                                        echo "<td>" . $row['Tipo'] . "</td>";
                                         echo "<td>";
-                                        echo "<a href='readPlatillo.php?IdPlatillos=". $row['IdPlatillos'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='updatePlatillo.php?IdPlatillos=". $row['IdPlatillos'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='deletePlatillo.php?IdPlatillos=". $row['IdPlatillos'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                       
+                                        
+                                            echo "<a href='update.php?IdCategoria=". $row['IdCategoria'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='delete.php?IdCategoria=". $row['IdCategoria'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

@@ -1,3 +1,6 @@
+
+
+
 <?php
 // Include config file
 require_once "../Config/config.php";
@@ -62,11 +65,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $Apellido = trim($_POST["Apellido"]);
     }
-    if(empty(trim($_POST["IdRol"]))){
-        $IdRol_err = "Please enter a IdRol.";     
-    } else{
-        $IdRol = trim($_POST["IdRol"]);
-    }
+
  
     
 
@@ -74,18 +73,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($Correo_err) && empty($Contraseña_err) && empty($Nombre_err) && empty($Apellido_err) && empty($IdRol_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO usuarios (Correo, Contraseña, Nombre, Apellido, IdRol) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO usuarios (Correo, Contraseña, Nombre, Apellido, IdRol) VALUES (?, ?, ?, ?, 3)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssss", $param_Correo, $param_Contraseña, $param_Nombre, $param_Apellido, $param_IdRol);
+            mysqli_stmt_bind_param($stmt, "ssss", $param_Correo, $param_Contraseña, $param_Nombre, $param_Apellido);
             
             // Set parameters
             $param_Correo = $Correo;
             $param_Contraseña = password_hash($Contraseña, PASSWORD_DEFAULT); // Creates a Contraseña hash
             $param_Nombre = $Nombre;
             $param_Apellido = $Apellido;
-            $param_IdRol = $IdRol;
 
             
             // Attempt to execute the prepared statement
@@ -163,10 +161,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="form-group <?php echo (!empty($Apellido_err)) ? 'has-error' : ''; ?>">
                 <label>Apellido</label>
                 <input type="Nombre" name="Apellido" class="form-control" value="<?php echo $Apellido; ?>">
-                <span class="help-block"><?php echo $Apellido_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($IdRol_err)) ? 'has-error' : ''; ?>">
-                <input type="hidden" name="IdRol" class="form-control" value="2">
                 <span class="help-block"><?php echo $Apellido_err; ?></span>
             </div>
 

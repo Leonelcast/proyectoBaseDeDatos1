@@ -16,8 +16,8 @@ if(!isset($_SESSION['IdRol'])){
 require_once "../Config/config.php";
  
 
-$IdPlatillos = $precio = $IdMenu = $destacado = $habilitado = $Descripcion = /*$Fotografia = */"";
-$IdPlatillos_err = $precio_err =  $IdMenu_err = $destacado_err = $habilitado_err = $Descripcion_err =/* $Fotografia_err =*/ "";
+$IdPlatillos = $precio = $IdMenu = $destacado = $habilitado = $Descripcion = $Fotografia = "";
+$IdPlatillos_err = $precio_err =  $IdMenu_err = $destacado_err = $habilitado_err = $Descripcion_err = $Fotografia_err ="";
  
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -43,47 +43,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $destacado =$_POST['destacado']; 
     $habilitado =$_POST['habilitado']; 
 
-   /* $input_destacado= trim($_POST["destacado"]);
-    if(empty($input_destacado)){
-        $destacado_err = "Please enter an destacado.";     
-    } else{
-        $destacado = $input_destacado;
-    }*/
 
-    /*$input_habilitado= trim($_POST["habilitado"]);
-    if(empty($input_habilitado)){
-        $habilitado = $input_habilitado;     
-    } else{
-        
-    }*/
     $input_Descripcion= trim($_POST["Descripcion"]);
     if(empty($input_Descripcion)){
         $Descripcion_err = "Please enter an destacado.";     
     } else{
         $Descripcion = $input_Descripcion;
     }
-  /*  $input_Fotografia= trim($_POST["Fotografia"]);
-    if(empty($input_Fotografia)){
-        $Fotografia_err = "Please enter an Fotografia.";     
-    } else{
-        $Fotografia = $input_Fotografia;
-    }*/
-    
+    if(isset($_FILE['Fotografia'])){
+        $Fotografia = $_FILES['Fotografia']['tmp_name'];
+        $tipo = $_FILES['Fotografia']['type'];
+        $imgContenido = addslashes(file_get_contents($Fotografia));
+    }
     
     if(empty($IdPlatillos_err) &&  empty($precio_err)  && empty($IdMenu_err)  && empty($destacado_err)  && empty($habilitado_err) 
-     && empty($Descripcion_err) /* && empty($Fotografia_err)*/){
+     && empty($Descripcion_err) && empty($Fotografia_err)){
       
-        $sql = "INSERT INTO platillos(IdPlatillos, precio, IdMenu, destacado, habilitado, Descripcion ) VALUES (0, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO platillos(IdPlatillos, precio, IdMenu, destacado, habilitado, Descripcion, Fotografia ) VALUES (0, ?, ?, ?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
-        mysqli_stmt_bind_param($stmt,"iiiis", $param_precio, $param_IdMenu, $param_destacado, $param_habilitado, $param_Descripcion /*$param_Fotografia*/);
+        mysqli_stmt_bind_param($stmt,"iiiisb", $param_precio, $param_IdMenu, $param_destacado, $param_habilitado, $param_Descripcion, $param_Fotografia);
         
             $param_precio = $precio;
             $param_IdMenu   = $IdMenu;
             $param_destacado = $destacado;
             $param_habilitado = $habilitado;
             $param_Descripcion = $Descripcion;
-           /* $param_Fotografia = $Fotografia;*/
+            $param_Fotografia =  $imgContenido ;
             if(mysqli_stmt_execute($stmt)){
                 header("location: platillo.php");
                 exit();
@@ -96,6 +82,41 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     mysqli_close($link);
+}
+?>
+<?php
+// Check if the form was submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    // Check if file was uploaded without errors
+    if(isset($_FILES["photo"]) && $_FILES["photo"]["error"] == 0){
+        $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+        $filename = $_FILES["photo"]["name"];
+        $filetype = $_FILES["photo"]["type"];
+        $filesize = $_FILES["photo"]["size"];
+    
+        // Verify file extension
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        if(!array_key_exists($ext, $allowed)) die("Error: Please select a valid file format.");
+    
+        // Verify file size - 5MB maximum
+        $maxsize = 5 * 1024 * 1024;
+        if($filesize > $maxsize) die("Error: File size is larger than the allowed limit.");
+    
+        // Verify MYME type of the file
+        if(in_array($filetype, $allowed)){
+            // Check whether file exists before uploading it
+            if(file_exists("upload/" . $filename)){
+                echo $filename . " is already exists.";
+            } else{
+                move_uploaded_file($_FILES["photo"]["tmp_name"], "upload/" . $filename);
+                echo "Your file was uploaded successfully.";
+            } 
+        } else{
+            echo "Error: There was a problem uploading your file. Please try again."; 
+        }
+    } else{
+        echo "Error: " . $_FILES["photo"]["error"];
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -162,6 +183,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <label class="sr-only">Descripcion</label>
                             <input type="text" name="Descripcion" class="form-control"  placeholder=" Descripcion" value="<?php echo $Descripcion; ?>">
                         </div>
+
+                     
+                        
+                        <br>
+                        <label class="">Fotografia</label>
+                    <input type='file' name='Fotografia' class="form-control" value="<?php echo  $imgContenido ; ?>">
+                    <br>
+  
                 
                   
                         <input type="submit" class="btn btn-primary" value="Agregar">

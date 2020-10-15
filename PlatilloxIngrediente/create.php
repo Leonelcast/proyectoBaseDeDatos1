@@ -26,7 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($input_IdIngrediente)){
         $IdIngrediente_err = "Please enter the IdIngrediente amount.";     
     } elseif(!ctype_digit($input_IdIngrediente)){
-        $Inventario_err = "Please enter a positive integer value.";
+        $IdIngrediente_err = "Please enter a positive integer value.";
     } else{
         $IdIngrediente= $input_IdIngrediente;
     }
@@ -36,17 +36,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($input_IdPlatillo)){
         $IdPlatillo_err = "Please enter the IdPlatillo amount.";     
     } elseif(!ctype_digit($input_IdPlatillo)){
-        $Inventario_err = "Please enter a positive integer value.";
+        $IdPlatillo_err = "Please enter a positive integer value.";
     } else{
-        $IdIdPlatillo= $input_IdPlatillo;
+        $IdPlatillo= $input_IdPlatillo;
     }
     
-    $input_Ingrediente= trim($_POST["IdPlatillo"]);
-    if(empty($input_Ingrediente)){
-        $Ingrediente_err = "Please enter an Ingrediente.";     
-    } else{
-        $Ingrediente = $input_Ingrediente;
-    }
+
     $input_Descripcion= trim($_POST["Descripcion"]);
     if(empty($input_Descripcion)){
         $Descripcion_err = "Please enter an Descripcion.";     
@@ -139,7 +134,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <br>
             <div class="form-group <?php echo (!empty($Descripcion_err)) ? 'has-error' : ''; ?>">
                             <label for="Descripcion" class="sr-only">Descripcion</label>
-                            <input type="text" name="Descripcion" class="form-control" placeholder="Agrega el numero de Descripcion" value="<?php echo $Descripcion; ?>">
+                            <input type="text" name="Descripcion" class="form-control" placeholder="Descripcion" value="<?php echo $Descripcion; ?>">
                             <span class="help-block"><?php echo $Descripcion_err;?></span>
                         </div>
             <br>
