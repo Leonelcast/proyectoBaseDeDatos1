@@ -70,29 +70,54 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 ?>
  
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reset Contraseña</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="../Style/index.css" rel="stylesheet">
+
+
 </head>
 <body>
-    <div class="wrapper">
-        <h2>Reset Contraseña</h2>
-        <p>Please fill out this form to reset your Contraseña.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> 
-            <div class="form-group <?php echo (!empty($new_Contraseña_err)) ? 'has-error' : ''; ?>">
-                <label>New Contraseña</label>
+<header>
+    <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="./Home.html">Pizza Planeta</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span> </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Menu</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Promociones</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Pedidos</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Login</a>
+          </nav>
+  </header>
+  <br>
+  <br>
+  <br>
+<section>
+<div class="row">
+                <div class="col-4"></div>
+                <div class="col-4">
+                <div class="wrapper">
+                <form class="form-signin" id="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <center> <img src="../img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
+               <center><h2>Cambiar Contraseña</h2></center> 
+               <center><p>Ingresa tu nueva contraseña.</p></center>
+        
+           
+          
+           <div class="form-group <?php echo (!empty($new_Contraseña_err)) ? 'has-error' : ''; ?>">
+                <label>Nueva Contraseña</label>
                 <input type="password" name="new_Contraseña" class="form-control" value="<?php echo $new_Contraseña; ?>">
                 <span class="help-block"><?php echo $new_Contraseña_err; ?></span>
             </div>
             <div class="form-group <?php echo (!empty($confirm_Contraseña_err)) ? 'has-error' : ''; ?>">
-                <label>Confirm Contraseña</label>
+                <label>Confirma tu  Contraseña</label>
                 <input type="password" name="confirm_Contraseña" class="form-control">
                 <span class="help-block"><?php echo $confirm_Contraseña_err; ?></span>
             </div>
@@ -101,6 +126,43 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <a class="btn btn-link" href="welcome.php">Cancel</a>
             </div>
         </form>
-    </div>    
+    </div>   
+          </form>
+          <br>
+
+                </div>
+                <div class="col-4"></div>
+
+
+
+                </div>
+            </div>        
+        </div>
+    </div>
+    </section>
+    
+<br>
+<br>
+<br>
+<br>
+
+
+    <footer class="page-footer font-small blue" id="Footer">
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+      <a> Pizza Planeta</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>      
+ 
 </body>
 </html>

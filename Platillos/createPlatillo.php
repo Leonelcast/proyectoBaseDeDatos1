@@ -50,8 +50,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $Descripcion = $input_Descripcion;
     }
-    if(isset($_FILE['Fotografia'])){
-        $Fotografia = $_FILES['Fotografia']['tmp_name'];
+    if(isset($_FILES['Fotografia'])){
+        $Fotografia = addslashes(file_get_contents($_FILES['Fotografia']['tmp_name']));
         $tipo = $_FILES['Fotografia']['type'];
         $imgContenido = addslashes(file_get_contents($Fotografia));
     }
@@ -59,17 +59,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($IdPlatillos_err) &&  empty($precio_err)  && empty($IdMenu_err)  && empty($destacado_err)  && empty($habilitado_err) 
      && empty($Descripcion_err) && empty($Fotografia_err)){
       
-        $sql = "INSERT INTO platillos(IdPlatillos, precio, IdMenu, destacado, habilitado, Descripcion, Fotografia ) VALUES (0, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO platillos(IdPlatillos, precio, IdMenu, destacado, habilitado, Descripcion, Fotografia ) VALUES (0, ?, ?, ?, ?, ?, '{$Fotografia}')";
          
         if($stmt = mysqli_prepare($link, $sql)){
-        mysqli_stmt_bind_param($stmt,"iiiisb", $param_precio, $param_IdMenu, $param_destacado, $param_habilitado, $param_Descripcion, $param_Fotografia);
+        mysqli_stmt_bind_param($stmt,"iiiis", $param_precio, $param_IdMenu, $param_destacado, $param_habilitado, $param_Descripcion);
         
             $param_precio = $precio;
             $param_IdMenu   = $IdMenu;
             $param_destacado = $destacado;
             $param_habilitado = $habilitado;
             $param_Descripcion = $Descripcion;
-            $param_Fotografia =  $imgContenido ;
+            $param_Fotografia =  $Fotografia ;
             if(mysqli_stmt_execute($stmt)){
                 header("location: platillo.php");
                 exit();
@@ -82,41 +82,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     mysqli_close($link);
-}
-?>
-<?php
-// Check if the form was submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Check if file was uploaded without errors
-    if(isset($_FILES["photo"]) && $_FILES["photo"]["error"] == 0){
-        $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
-        $filename = $_FILES["photo"]["name"];
-        $filetype = $_FILES["photo"]["type"];
-        $filesize = $_FILES["photo"]["size"];
-    
-        // Verify file extension
-        $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        if(!array_key_exists($ext, $allowed)) die("Error: Please select a valid file format.");
-    
-        // Verify file size - 5MB maximum
-        $maxsize = 5 * 1024 * 1024;
-        if($filesize > $maxsize) die("Error: File size is larger than the allowed limit.");
-    
-        // Verify MYME type of the file
-        if(in_array($filetype, $allowed)){
-            // Check whether file exists before uploading it
-            if(file_exists("upload/" . $filename)){
-                echo $filename . " is already exists.";
-            } else{
-                move_uploaded_file($_FILES["photo"]["tmp_name"], "upload/" . $filename);
-                echo "Your file was uploaded successfully.";
-            } 
-        } else{
-            echo "Error: There was a problem uploading your file. Please try again."; 
-        }
-    } else{
-        echo "Error: " . $_FILES["photo"]["error"];
-    }
 }
 ?>
 <!DOCTYPE html>
@@ -150,7 +115,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <div class="col-4"></div>
                 <div class="col-4">
 
-                <form class="form-signin" id="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <form class="form-signin" id="form" action="/PROYECTO/Home/Platillos/create.php" enctype="multipart/form-data" method="post">
            <center> <img src="../img/pizzaLogo.png" alt="Girl in a jacket" id="logoLogin"></center>
            <br>
            <center><h2> Agregar Nuevo Platillo</h2></center> 
@@ -188,11 +153,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         
                         <br>
                         <label class="">Fotografia</label>
-                    <input type='file' name='Fotografia' class="form-control" value="<?php echo  $imgContenido ; ?>">
+                    <input type='file' name='Fotografia' class="form-control">
+                    <br>
                     <br>
   
                 
-                  
+                    <a href="../PlatilloxIngrediente/PlatilloxIngrediente.php" class="btn btn-success pull-right" style="margin-left: 10px">Editar relacion con Ingredientes</a>
                         <input type="submit" class="btn btn-primary" value="Agregar">
                         <a href="platillo.php" class="btn btn-default">Cancelar</a>
           </form>

@@ -47,7 +47,7 @@ if(!isset($_SESSION['IdRol'])){
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Platillo</h2>
-        <a href="../PlatilloxIngrediente/PlatilloxIngrediente.php" class="btn btn-success pull-right" style="margin-left: 10px">Editar relacion con Ingredientes</a>
+       
                         <a href="createPlatillo.php" class="btn btn-success pull-right">Agregar nuevo Platillo</a>
                     </div>
                     <?php

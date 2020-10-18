@@ -92,19 +92,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                    <center> <p>Llena los campos para agregar un Menu</p></center>
                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-         
-                        <div class="form-group <?php echo (!empty($IdCategoria_err)) ? 'has-error' : ''; ?>">
-                            <label>IdCategoria</label>
-                            <input type="text" name="IdCategoria" class="form-control" value="<?php echo $IdCategoria; ?>">
-                            <span class="help-block"><?php echo $IdCategoria_err;?></span>
-                        </div>
+                        <div class="col-md-12 form-group">
+                        <label class="form-label">Categoria</label>
+                        <select id="IdCategoria" name="IdCategoria" class="form-control">
+                           <option value="0">Seleccione la categoria</option>
+                           <?php
+                            $query = "SELECT * FROM categorias;";
+                            $result = mysqli_query($link, $query);
 
-                           <select id="cars">
-                           <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                           ?>
+                            <?php
+                              while($row = mysqli_fetch_array($result)) { ?>
+                                <option value="<?php echo $row['IdCategoria'] ?>"><?php echo $row['Tipo'] ?></option>
+                              <?php } ?>
                             </select>
+                        </div>
+                           
                   
                         <input type="submit" class="btn btn-primary" value="Agregar">
                         <a href="Menu.php" class="btn btn-default">Cancelar</a>

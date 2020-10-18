@@ -106,7 +106,7 @@ if(isset($_POST["IdPlatillos"]) && !empty($_POST["IdPlatillos"])){
                     $destacado = $row["destacado"];
                     $habilitado = $row["habilitado"];
                     $Descripcion = $row["Descripcion"];
-                   /* $Fotografia = $row["Fotografia"];*/
+                    $Fotografia = $row["Fotografia"];
                 } else{
                     
                     header("location: error.php");
@@ -196,7 +196,17 @@ if(isset($_POST["IdPlatillos"]) && !empty($_POST["IdPlatillos"])){
                         </div>
                         <br>
                         <input type="hidden" name="IdPlatillos" value="<?php echo $IdPlatillos; ?>"/>
+                        <center>
+                        <?php
+                        echo "<td>". "<img src='data:image/jpeg;base64," .base64_encode($row['Fotografia'])."' />". "</td>"; ?> </center>
+                        <br>
+                        <input type='file' name='Fotografia' class="form-control">
+                        <br>
+                        <br>
                         <input type="submit" class="btn btn-primary" value="Actualizar">
+
+                       
+                        
                         <a href="platillo.php" class="btn btn-default">Cancel</a>
           </form>
           <br>

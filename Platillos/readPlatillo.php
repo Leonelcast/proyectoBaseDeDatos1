@@ -113,9 +113,14 @@ if(isset($_GET["IdPlatillos"]) && !empty(trim($_GET["IdPlatillos"]))){
                     </div>
                     <div class="form-group">
                         <label>Fotografia</label>
-                        <p class="form-control-static"><?php echo $row["Fotografia"]; ?></p>
+                        <br>
+                        <center>
+                        <?php
+                        echo "<td>". "<img src='data:image/jpeg;base64," .base64_encode($row['Fotografia'])."' />". "</td>"; ?> </center>
                     </div>
-                        <p><a href="platillo.php" class="btn btn-primary">Back</a></p>
+                    <br>
+                    <a href="../PlatilloxIngrediente/PlatilloxIngrediente.php" class="btn btn-success pull-right" style="margin-left: 10px">Editar relacion con Ingredientes</a>
+                    <a href="platillo.php" class="btn btn-primary">Back</a>
           </form>
           <br>
 

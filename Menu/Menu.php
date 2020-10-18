@@ -53,14 +53,14 @@ if(!isset($_SESSION['IdRol'])){
                     <?php
                     require_once "../Config/config.php";
                     
-                    $sql = "SELECT * FROM menus";
+                    $sql = "SELECT * FROM menus as m INNER JOIN categorias as c ON c.IdCategoria = m.IdCategoria ORDER BY IdMenu";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>IdCategoria</th>";
+                                        echo "<th>Categoria</th>";
                                         echo "<th>Editar/Eliminar</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -68,7 +68,7 @@ if(!isset($_SESSION['IdRol'])){
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['IdMenu'] . "</td>";
-                                        echo "<td>" . $row['IdCategoria'] . "</td>";
+                                        echo "<td>" . $row['Tipo'] . "</td>";
                                         echo "<td>";
                                        
                                         
