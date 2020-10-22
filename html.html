@@ -1,75 +1,461 @@
-<?php
+<?php 
+/* code by webdevtrick ( https://webdevtrick.com ) */
+session_start();
+$connect = mysqli_connect("localhost", "root", "", "restaurante");
 
-require_once "../Config/config.php";
- 
-
-$IdPlatillosIngredientes = $IdIngrediente = $IdPlatillo = $Descripcion = $Cantidad =  "";
-$IdPlatillosIngredientes_err = $IdIngrediente_err = $IdPlatillo_err = $Descripcion_err = $Cantidad_err = "";
- 
-
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-    $input_IdIngrediente= trim($_POST["IdIngrediente"]);
-    if(empty($input_IdIngrediente)){
-        $IdIngrediente_err = "Please enter the IdIngrediente amount.";     
-    } elseif(!ctype_digit($input_IdIngrediente)){
-        $Inventario_err = "Please enter a positive integer value.";
-    } else{
-        $IdIngrediente= $input_IdIngrediente;
-    }
-
-    $input_IdPlatillo= trim($_POST["IdPlatillo"]);
-    if(empty($input_IdPlatillo)){
-        $IdPlatillo_err = "Please enter the IdPlatillo amount.";     
-    } elseif(!ctype_digit($input_IdPlatillo)){
-        $Inventario_err = "Please enter a positive integer value.";
-    } else{
-        $IdIdPlatillo= $input_IdPlatillo;
-    }
-    
-
-    $input_Ingrediente= trim($_POST["IdPlatillo"]);
-    if(empty($input_Ingrediente)){
-        $Ingrediente_err = "Please enter an Ingrediente.";     
-    } else{
-        $Ingrediente = $input_Ingrediente;
-    }
-    
-    $input_Descripcion= trim($_POST["Descripcion"]);
-    if(empty($input_Descripcion)){
-        $Descripcion_err = "Please enter an Descripcion.";     
-    } else{
-        $Descripcion = $input_Descripcion;
-    }
-
-    $input_Cantidad= trim($_POST["Cantidad"]);
-    if(empty($input_Cantidad)){
-        $Cantidad_err = "Please enter an Cantidad.";     
-    } else{
-        $Cantidad = $input_Cantidad;
-    }
-    
-    if(empty($IdPlatillosIngredientes_err) && empty($IdIngrediente_err) && empty($IdPlatillo_err) && empty($Descripcion_err) && empty($Cantidad_err)){
-      $sql = "INSERT INTO IdPlatillosIngredientes (IdIngrediente, IdPlatillo, Descripcion, Cantidad) VALUES (0, ?, ?, ?, ?)";
-         if($stmt = mysqli_prepare($link, $sql)){
-         mysqli_stmt_bind_param($stmt,"iiiss", $param_IdIngrediente, $param_IdPlatillo, $param_Descripcion, $param_Cantidad);
-         
-             $param_IdIngrediente = $IdIngrediente;
-             $param_IdPlatillo   = $IdPlatillo;
-             $param_Descripcion = $Descripcion;
-             $param_Cantidad = $Cantidad;
-        
-             if(mysqli_stmt_execute($stmt)){
-                 header("location: PlatilloxIngrediente.php");
-                 exit();
-             } else{
-                 echo "Something went wrong. Please try again later.";
-             }
-         }
-          
-         mysqli_stmt_close($stmt);
-     }
-     
-     mysqli_close($link)
+if(isset($_POST["add_to_cart"]))
+{
+	if(isset($_SESSION["shopping_cart"]))
+	{
+		$item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
+		if(!in_array($_GET["id"], $item_array_id))
+		{
+			$count = count($_SESSION["shopping_cart"]);
+			$item_array = array(
+				'item_id'			=>	$_GET["id"],
+				'item_name'			=>	$_POST["hidden_name"],
+				'item_price'		=>	$_POST["hidden_price"],
+				'item_quantity'		=>	$_POST["quantity"]
+			);
+			$_SESSION["shopping_cart"][$count] = $item_array;
+		}
+		else
+		{
+			echo '<script>alert("Item Already Added")</script>';
+		}
+	}
+	else
+	{
+		$item_array = array(
+			'item_id'			=>	$_GET["id"],
+			'item_name'			=>	$_POST["hidden_name"],
+			'item_price'		=>	$_POST["hidden_price"],
+			'item_quantity'		=>	$_POST["quantity"]
+		);
+		$_SESSION["shopping_cart"][0] = $item_array;
+	}
 }
+
+if(isset($_GET["action"]))
+{
+	if($_GET["action"] == "delete")
+	{
+		foreach($_SESSION["shopping_cart"] as $keys => $values)
+		{
+			if($values["item_id"] == $_GET["id"])
+			{
+				unset($_SESSION["shopping_cart"][$keys]);
+				echo '<script>alert("Item Removed")</script>';
+				echo '<script>window.location = "home.php"</script>';
+			}
+		}
+	}
+}
+
 ?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link href="../Style/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand" id="TextNavColor"
+                href="./Home.html">Pizza Planeta</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span> </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" id="TextNavColor" href="./Index.html">Menu</a>
+                    <a class="nav-item nav-link" id="TextNavColor" href="./registry.html">Promociones</a>
+                    <a class="nav-item nav-link" id="TextNavColor" href="./registry.html">Pedidos</a>
+                    <a class="nav-item nav-link" id="TextNavColor" href="./Index.html">Login</a>
+
+
+        </nav>
+    </header>
+    <h3 style="text-align: center;    ">Busqueda:</h3>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-3">
+
+                <label class="sr-only">Platillos</label>
+                <input type="text" name="Platillos" class="form-control" placeholder="Busqueda de Platillos">
+            </div>
+            <div class="col-3">
+
+
+                <label class="sr-only">Ingredientes</label>
+                <input type="text" name="Ingredientes" class="form-control" placeholder="Busqueda de Ingredientes">
+            </div>
+            <div class="col-3">
+                <select class="form-control">
+                    <option value="0">Disponible</option>
+                    <option value="0">No Disponible</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div style="clear:both"></div>
+                <br />
+                <h3>Order Details</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="40%">Nombre</th>
+                            <th width="10%">Cantidad</th>
+                            <th width="20%">Precio</th>
+                            <th width="15%">Total</th>
+                            <th width="5%">Eliminar</th>
+                        </tr>
+                        <?php
+					if(!empty($_SESSION["shopping_cart"]))
+					{
+						$total = 0;
+						foreach($_SESSION["shopping_cart"] as $keys => $values)
+						{
+					?>
+                        <tr>
+                            <td><?php echo $values["item_name"]; ?></td>
+                            <td><?php echo $values["item_quantity"]; ?></td>
+                            <td>Q <?php echo $values["item_price"]; ?></td>
+                            <td>Q <?php echo number_format($values["item_quantity"] * $values["item_price"], 2);?></td>
+                            <td><a href="home.php?action=delete&id=<?php echo $values["item_id"]; ?>"><span
+                                        class="text-danger">Remove</span></a></td>
+                        </tr>
+                        <?php
+							$total = $total + ($values["item_quantity"] * $values["item_price"]);
+						}
+					?>
+                        <tr>
+                            <td colspan="3" align="right">Total</td>
+                            <td align="right">Q <?php echo number_format($total, 2); ?></td>
+                            <td></td>
+                        </tr>
+                        <?php
+					}
+					?>
+
+                    </table>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <!-- You can make it whatever width you want. I'm making it full width
+on <= small devices and 4/12 page width on >= medium devices -->
+                    <div class="col-xs-12 col-md-4">
+
+
+                        <!-- CREDIT CARD FORM STARTS HERE -->
+                        <div class="panel panel-default credit-card-box">
+                            <div class="panel-heading display-table">
+                                <div class="row display-tr">
+                                    <h3 class="panel-title display-td">Payment Details</h3>
+                                    <div class="display-td">
+                                        <img class="img-responsive pull-right"
+                                            src="http://i76.imgup.net/accepted_c22e0.png">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <form role="form" id="payment-form">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="cardNumber">CARD NUMBER</label>
+                                                <div class="input-group">
+                                                    <input type="tel" class="form-control" name="cardNumber"
+                                                        placeholder="Valid Card Number" autocomplete="cc-number"
+                                                        required autofocus />
+                                                    <span class="input-group-addon"><i
+                                                            class="fa fa-credit-card"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-7 col-md-7">
+                                            <div class="form-group">
+                                                <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span
+                                                        class="visible-xs-inline">EXP</span> DATE</label>
+                                                <input type="tel" class="form-control" name="cardExpiry"
+                                                    placeholder="MM / YY" autocomplete="cc-exp" required />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-5 col-md-5 pull-right">
+                                            <div class="form-group">
+                                                <label for="cardCVC">CV CODE</label>
+                                                <input type="tel" class="form-control" name="cardCVC" placeholder="CVC"
+                                                    autocomplete="cc-csc" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="Direccion">Direccion</label>
+                                                <input type="text" class="form-control" name="Direccion" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button class="btn btn-success btn-lg btn-block" type="submit">Start
+                                                Subscription</button>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="display:none;">
+                                        <div class="col-xs-12">
+                                            <p class="payment-errors"></p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- CREDIT CARD FORM ENDS HERE -->
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <!-- If you're using Stripe for payments -->
+            <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+</body>
+
+
+
+<br>
+<div class="container">
+
+    <center>
+        <h3>Almuerzo</h3>
+    </center>
+    <hr>
+    <?php
+				$query = "SELECT * FROM platillos where IdMenu = 2";
+				$result = mysqli_query($connect, $query);
+				if(mysqli_num_rows($result) > 0)
+				{
+					while($row = mysqli_fetch_array($result))
+					{
+				?>
+    <div class="col-md-3">
+        <form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
+            <div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;"
+                align="center">
+                <img src="data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>" class="img-responsive">
+
+
+                <h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
+
+                <h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
+
+                <input type="text" name="quantity" value="1" class="form-control" />
+
+                <input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
+
+                <input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
+
+                <input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success"
+                    value="Add to Cart" />
+
+            </div>
+        </form>
+    </div>
+
+    <?php
+					}
+				}
+			?>
+    <div class=" container">
+        <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <center>
+            <h3>Cena</h3>
+        </center>
+        <hr>
+        <?php
+				$query = "SELECT * FROM platillos where IdMenu = 6 ";
+				$result = mysqli_query($connect, $query);
+				if(mysqli_num_rows($result) > 0)
+				{
+					while($row = mysqli_fetch_array($result))
+					{
+				?>
+        <div class="col-md-3">
+            <form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
+                <div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;"
+                    align="center">
+                    <img src="data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>"
+                        class="img-responsive">
+
+
+                    <h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
+
+                    <h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
+
+                    <input type="text" name="quantity" value="1" class="form-control" />
+
+                    <input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
+
+                    <input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
+
+                    <input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success"
+                        value="Add to Cart" />
+
+                </div>
+            </form>
+        </div>
+        <?php
+					}
+				}
+			?>
+    </div>
+    <div class="container">
+
+        <center>
+            <h3>Postres</h3>
+        </center>
+        <hr>
+        <?php
+				$query = "SELECT * FROM platillos where IdMenu = 7 ";
+				$result = mysqli_query($connect, $query);
+				if(mysqli_num_rows($result) > 0)
+				{
+					while($row = mysqli_fetch_array($result))
+					{
+				?>
+        <div class="col-md-3">
+            <form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
+                <div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;"
+                    align="center">
+                    <img src="data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>"
+                        class="img-responsive">
+
+
+                    <h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
+
+                    <h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
+
+                    <input type="text" name="quantity" value="1" class="form-control" />
+
+                    <input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
+
+                    <input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
+
+                    <input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success"
+                        value="Add to Cart" />
+
+                </div>
+            </form>
+        </div>
+        <?php
+					}
+				}
+			?>
+    </div>
+
+    <div class="container">
+
+        <center>
+            <h3>Destacados</h3>
+        </center>
+        <hr>
+        <?php
+	$query = "SELECT * FROM platillos where destacado = true limit 4; ";
+	$result = mysqli_query($connect, $query);
+	if(mysqli_num_rows($result) > 0)
+	{
+		while($row = mysqli_fetch_array($result))
+		{
+	?>
+        <div class="col-md-3">
+            <form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
+                <div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;"
+                    align="center">
+                    <img src="data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>"
+                        class="img-responsive">
+
+
+                    <h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
+
+                    <h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
+
+                    <input type="text" name="quantity" value="1" class="form-control" />
+
+                    <input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
+
+                    <input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
+
+                    <input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success"
+                        value="Add to Cart" />
+
+                </div>
+            </form>
+        </div>
+        <?php
+		}
+	}
+?>
+    </div>
+</div>
+</div>
+</div>
+<br>
+<footer class="page-footer font-small blue" id="Footer">
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a> Pizza Planeta</a>
+    </div>
+</footer>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</body>
+
+</html>

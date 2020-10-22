@@ -125,6 +125,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <input type="number" name="IdIngrediente" class="form-control" placeholder="Agrega el numero de IdIngrediente" value="<?php echo $IdIngrediente; ?>">
                             <span class="help-block"><?php echo $IdIngrediente_err;?></span>
                         </div>
+                        
             <br>
             <div class="form-group <?php echo (!empty($IdPlatillo_err)) ? 'has-error' : ''; ?>">
                             <label for="IdPlatillo" class="sr-only">IdPlatillo</label>

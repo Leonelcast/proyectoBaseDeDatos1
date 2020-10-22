@@ -1,15 +1,70 @@
-<?php include '../Config/ConfigPdo.php'; ?>
-<!doctype html>
-<html lang="en">
+<?php 
+session_start();
+$connect = mysqli_connect("localhost", "root", "", "restaurante");
+
+if(isset($_POST["add_to_cart"]))
+{
+	if(isset($_SESSION["shopping_cart"]))
+	{
+		$item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
+		if(!in_array($_GET["id"], $item_array_id))
+		{
+			$count = count($_SESSION["shopping_cart"]);
+			$item_array = array(
+				'item_id'			=>	$_GET["id"],
+				'item_name'			=>	$_POST["hidden_name"],
+				'item_price'		=>	$_POST["hidden_price"],
+				'item_quantity'		=>	$_POST["quantity"]
+			);
+			$_SESSION["shopping_cart"][$count] = $item_array;
+		}
+		else
+		{
+			echo '<script>alert("Item Already Added")</script>';
+		}
+	}
+	else
+	{
+		$item_array = array(
+			'item_id'			=>	$_GET["id"],
+			'item_name'			=>	$_POST["hidden_name"],
+			'item_price'		=>	$_POST["hidden_price"],
+			'item_quantity'		=>	$_POST["quantity"]
+		);
+		$_SESSION["shopping_cart"][0] = $item_array;
+	}
+}
+
+if(isset($_GET["action"]))
+{
+	if($_GET["action"] == "delete")
+	{
+		foreach($_SESSION["shopping_cart"] as $keys => $values)
+		{
+			if($values["item_id"] == $_GET["id"])
+			{
+				unset($_SESSION["shopping_cart"][$keys]);
+				echo '<script>alert("Item Removed")</script>';
+				echo '<script>window.location="home.php"</script>';
+			}
+		}
+	}
+}
+
+?>
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Create Record</title>
+    <title>Dashboard</title>
     <link href="../Style/index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    
 </head>
-<body>
-<header>
+	<body>
+  <header>
     <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="./Home.html">Pizza Planeta</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,143 +75,308 @@
           <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Promociones</a>
           <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Pedidos</a>
           <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Login</a>
-          </nav>
+          
+
+    </nav>
   </header>
-  <br>
-  <br>
-  <div class="container">
+<h3 style ="text-align: center;    ">Busqueda:</h3>
+<br>
+  <div class="container" >
     <div class="row">
-      <div class="col-3"></div>
-      <div class="col-3">
-        <label class="sr-only">Platillos</label>
-        <input type="text" name="Platillos" class="form-control" placeholder="Agrega Platillos">
+      
+      <div class="col-4">
+      
+       
       </div>
-      <div class="col-3">
+      <div class="col-4">
+	  <form action="search.php" method="POST">
+	  <label class="sr-only">Ingredientes</label>
+		<input type="text" name="Ingrediente" class="form-control" placeholder="Busqueda de Ingredientes">
+	 
+		
 
-
-        <label class="sr-only">Ingredientes</label>
-        <input type="text" name="Ingredientes" class="form-control" placeholder="Agrega Ingredientes">
-      </div>
-      <div class="col-3">
-      <select class="form-control">
+<label class="sr-only">Platillos</label>
+		<input type="text" name="Platillos" class="form-control" placeholder="Busqueda de Platillos">
+       
+		<select class="form-control">
     <option value="0">Disponible</option>
-    <option value="0">No Disponible</option>
+	<option value="0">No Disponible</option>
   </select>
+  <br>
+  <input type="submit" name="buscar" class="btn btn-success" value= "Buscar">
+  </form>
+      </div>
+      <div class="col-4">
+   
 </div>
     </div>
   </div>
- 
-  
-      <br>
-      <br>
-      <section>
-      <div>
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-             <center><h3>Almuerzo</h3></center> 
-              <hr>
-              </div>
-              <?php 
-                    $result = $mysqli->query("SELECT Descripcion, precio, Fotografia, IdCategoria FROM platillos inner join menus  
-                    on platillos.IdMenu= menus.IdMenu where IdCategoria = 2") or die($mysqli->error);
-                    while ($row = $result->fetch(PDO::FETCH_ASSOC)){
-                    ?>
-                  <div class="col-md-3">
-                    
-                  <img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>">
-                   <h3 class="menu-item"> <?php echo $row['Descripcion']?></h3> 
-                          <b><span class="menu_price">Q <?php echo $row['precio']?></span></b>
-                          <br>
-                          <a href="order.php" class="btn btn-success pull-right">Order Now</a>
-                          <br>
-                  </div>
-                    <?php }?>
-      </section>
-      <br>
-      <section>
-        <div>
-            <div class="container">
-              <div class="row">
-                <div class="col-md-12">
-              <center><h3>Cena</h3></center>  
-                <hr>
-                </div>
-                <?php 
-                    $result = $mysqli->query("SELECT Descripcion, precio, Fotografia, IdCategoria FROM platillos inner join menus  
-                    on platillos.IdMenu= menus.IdMenu where IdCategoria = 3") or die($mysqli->error);
-                    while ($row = $result->fetch(PDO::FETCH_ASSOC)){
-                    ?>
-                  <div class="col-md-3">
-                    
-                  <img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>">
-                   <h3 class="menu-item"> <?php echo $row['Descripcion']?></h3> 
-                          <b><span class="menu_price">Q <?php echo $row['precio']?></span></b>
-                          <br>
-                          <a href="order.php" class="btn btn-success pull-right">Order Now</a>
-                          <br>
-                  </div>
-                    <?php }?>
-                
-        </section>
-        <br>
-        <section>
-          <div>
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12">
-                 <center><h3>Postres</h3></center> 
-                  <hr>
-                  </div>
-                  <?php 
-                    $result = $mysqli->query("SELECT Descripcion, precio, Fotografia, IdCategoria FROM platillos inner join menus  
-                    on platillos.IdMenu= menus.IdMenu where IdCategoria = 13") or die($mysqli->error);
-                    while ($row = $result->fetch(PDO::FETCH_ASSOC)){
-                    ?>
-                  <div class="col-md-3">
-                    
-                  <img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>">
-                   <h3 class="menu-item"> <?php echo $row['Descripcion']?></h3> 
-                          <b><span class="menu_price">Q <?php echo $row['precio']?></span></b>
-                          <br><a href="order.php" class="btn btn-success pull-right">Order Now</a>
-                          <br>
-                  </div>
-                    <?php }?>
-          </section>
-          <br>
-          <section>
-            <div>
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-12">
-                  <center> <h3>Destacados</h3></center> 
-                    <hr>
-                    </div>
-                    <?php 
-                    $result = $mysqli->query("SELECT Descripcion, precio, Fotografia, IdCategoria, destacado FROM platillos inner join menus  
-                    on platillos.IdMenu= menus.IdMenu where destacado = true LIMIT 4") or die($mysqli->error);
-                    while ($row = $result->fetch(PDO::FETCH_ASSOC)){
-                    ?>
-                  <div class="col-md-3">
-                    
-                  <img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>">
-                   <h3 class="menu-item"> <?php echo $row['Descripcion']?></h3> 
-                          <b><span class="menu_price">Q<?php echo $row['precio']?></span></b>
-                          <br>
-                          <a href="order.php" class="btn btn-success pull-right">Order Now</a>
-                          <br>
-                  </div>
-                    <?php }?>
-            </section>
-            <br>
 
-            <footer class="page-footer font-small blue" id="Footer">
+		<br>
+    <div class="container">
+    <div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+    <div style="clear:both"></div>
+			<br />
+			<h3>Order Details</h3>
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<tr>
+						<th width="40%">Nombre</th>
+						<th width="10%">Cantidad</th>
+						<th width="20%">Precio</th>
+						<th width="15%">Total</th>
+						<th width="5%">Eliminar</th>
+					</tr>
+					<?php
+					if(!empty($_SESSION["shopping_cart"]))
+					{
+						$total = 0;
+						foreach($_SESSION["shopping_cart"] as $keys => $values)
+						{
+					?>
+					<tr>
+						<td><?php echo $values["item_name"]; ?></td>
+						<td><?php echo $values["item_quantity"]; ?></td>
+						<td>Q <?php echo $values["item_price"]; ?></td>
+						<td>Q <?php echo number_format($values["item_quantity"] * $values["item_price"], 2);?></td>
+						<td><a href="home.php?action=delete&id=<?php echo $values["item_id"]; ?>"><span class="text-danger">Remove</span></a></td>
+					</tr>
+					<?php
+							$total = $total + ($values["item_quantity"] * $values["item_price"]);
+						}
+					?>
+					<tr>
+						<td colspan="3" align="right">Total</td>
+						<td align="right">Q <?php echo number_format($total, 2); ?></td>
+						<td></td>
+					</tr>
+					<?php
+					}
+					?>
+						
+				</table>
+			</div>
+		</div>
+   <br>
+   <br>
+   <div class = "container">
+     <div class="row">
+       <div class ="col-3"></div>
+       <div class ="col-6">
+   <form  class="form-signin" id="form">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Nombre</label>
+      <input type="text" class="form-control"  placeholder="Nombre">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">Direccion</label>
+      <input type="text" class="form-control" id="inputPassword4" placeholder="Direccion">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputAddress">Numero en la tarjeta</label>
+    <input type="text" class="form-control" placeholder="Numero de tarjeta">
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputCity">Fecha de expiracion</label>
+      <input type="date" class="form-control" id="inputCity">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputZip">Codigo CV</label>
+      <input type="text" class="form-control" id="inputZip">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Realizar pedido</button>
+</form>
+</div>
+<div class ="col-3"></div>
+</div>
+</div>
+
+   
+    <br>
+		<div class="container">
+		
+			<center><h3>Almuerzo</h3></center> 
+			<hr>
+			<?php
+				$query = "SELECT * FROM platillos where IdMenu = 2";
+				$result = mysqli_query($connect, $query);
+				if(mysqli_num_rows($result) > 0)
+				{
+					while($row = mysqli_fetch_array($result))
+					{
+				?>
+			<div class="col-md-3">
+				<form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
+					<div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;" align="center">
+					<img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>" class="img-responsive">
+
+
+						<h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
+
+						<h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
+
+						<input type="text" name="quantity" value="1" class="form-control" />
+
+						<input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
+
+						<input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
+
+						<input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success" value="Add to Cart" />
+
+					</div>
+				</form>
+			</div>
+			
+			<?php
+					}
+				}
+			?>
+      <div class=" container">
+      <div class="row">
+      <div class="col-9"></div>
+      <div class="col-3">
+      
+      
+      
+      </div>
+      </div>
+      </div>
+
+<div class="container">
+
+			<center><h3>Cena</h3></center> 
+			<hr>
+			<?php
+				$query = "SELECT * FROM platillos where IdMenu = 6 ";
+				$result = mysqli_query($connect, $query);
+				if(mysqli_num_rows($result) > 0)
+				{
+					while($row = mysqli_fetch_array($result))
+					{
+				?>
+			<div class="col-md-3">
+				<form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
+					<div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;" align="center">
+					<img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>" class="img-responsive">
+
+
+						<h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
+
+						<h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
+
+						<input type="text" name="quantity" value="1" class="form-control" />
+
+						<input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
+
+						<input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
+
+						<input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success" value="Add to Cart" />
+
+					</div>
+				</form>
+			</div>
+			<?php
+					}
+				}
+			?>
+			</div>
+			<div class="container">
+
+			<center><h3>Postres</h3></center> 
+			<hr>
+			<?php
+				$query = "SELECT * FROM platillos where IdMenu = 7 ";
+				$result = mysqli_query($connect, $query);
+				if(mysqli_num_rows($result) > 0)
+				{
+					while($row = mysqli_fetch_array($result))
+					{
+				?>
+			<div class="col-md-3">
+				<form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
+					<div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;" align="center">
+					<img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>" class="img-responsive">
+
+
+						<h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
+
+						<h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
+
+						<input type="text" name="quantity" value="1" class="form-control" />
+
+						<input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
+
+						<input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
+
+						<input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success" value="Add to Cart" />
+
+					</div>
+				</form>
+			</div>
+			<?php
+					}
+				}
+			?>
+			</div>
+		
+<div class="container">
+
+<center><h3>Destacados</h3></center> 
+<hr>
+<?php
+	$query = "SELECT * FROM platillos where destacado = true limit 4; ";
+	$result = mysqli_query($connect, $query);
+	if(mysqli_num_rows($result) > 0)
+	{
+		while($row = mysqli_fetch_array($result))
+		{
+	?>
+<div class="col-md-3">
+	<form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
+		<div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;" align="center">
+		<img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>" class="img-responsive">
+
+
+			<h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
+
+			<h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
+
+			<input type="text" name="quantity" value="1" class="form-control" />
+
+			<input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
+
+			<input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
+
+			<input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success" value="Add to Cart" />
+
+		</div>
+	</form>
+</div>
+<?php
+		}
+	}
+?>
+</div>
+</div>
+</div>
+</div>
+<br>
+<footer class="page-footer font-small blue" id="Footer">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
       <a> Pizza Planeta</a>
     </div>
  </footer>
-  
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+
+
+
+
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -165,5 +385,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  
+	</body>
 </html>

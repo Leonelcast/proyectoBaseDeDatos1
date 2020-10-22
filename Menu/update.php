@@ -134,6 +134,7 @@ if(isset($_POST["IdMenu"]) && !empty($_POST["IdMenu"])){
             <hr>
 
                    <center> <p>Llena los campos para actualizar un nuevo Ingrediente</p></center>
+                   
 
                    <div class="form-group <?php echo (!empty($IdCategoria_err)) ? 'has-error' : ''; ?>">
                             <label>IdCategoria</label>
