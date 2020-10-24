@@ -1,6 +1,6 @@
 <?php
-  require_once "../ConexionesUsuario/EmpleadoAdmin.php";
 
+require_once "../ConexionesUsuario/EmpleadoAdmin.php";
 ?>
 
 <!DOCTYPE html>
@@ -39,38 +39,70 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Ingredientes</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Agregar nuevo Ingrediente</a>
+                        <h2 class="pull-left">Pedidos</h2>
+        
                     </div>
                     <?php
                     require_once "../Config/config.php";
                     
-                    $sql = "SELECT * FROM ingredientes";
+                    $sql = "SELECT IdPedido, estadopedidos.IdEstadoPedido as IdEstado, estadopedidos.Nombre as NombreEstado, Fecha, Confirmado, observacion, total, Correo, usuarios.Nombre as NombreUsuario, Apellido from usuarios INNER JOIN pedidos 
+                    ON pedidos.IdUsuarios = usuarios.IdUsuario INNER JOIN  estadopedidos on pedidos.IdEstadoPedido = estadopedidos.IdEstadoPedido;";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Inventario</th>";
-                                        echo "<th>Ingrediente</th>";
-                                        echo "<th>Editar/Eliminar</th>";
+                                        echo "<th>IdEstado</th>";
+                                        echo "<th>Estado</th>";
+                                        echo "<th>Fecha</th>";
+                                        echo "<th>Observacion</th>";
+                                        echo "<th>total</th>";
+                                        echo "<th>Correo</th>";
+                                        echo "<th>Nombre</th>";
+                                        echo "<th>Apellido</th>";
+                                        echo "<th>Estado</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['IdIngrediente'] . "</td>";
-                                        echo "<td>" . $row['Inventario'] . "</td>";
-                                        echo "<td>" . $row['Ingrediente'] . "</td>";
-                                        echo "<td>";
-                                       
+                                        echo "<td>" . $row['IdPedido'] . "</td>";
+                                        echo "<td>" . $row['IdEstado'] . "</td>";
+                                        echo "<td>" . $row['NombreEstado'] . "</td>";
+                                        echo "<td>" . $row['Fecha'] . "</td>";
+                                        echo "<td>" . $row['observacion'] . "</td>";
+                                        echo "<td>" . $row['total'] . "</td>";
+                                        echo "<td>" . $row['Correo'] . "</td>";
+                                        echo "<td>" . $row['NombreUsuario'] . "</td>";
+                                        echo "<td>" . $row['Apellido'] . "</td>";
+                                        echo "<td>";  "</td>";
+                                        $idPedido = $row['IdPedido'];
+                                        if($row['IdEstado'] ==1){
+                                            echo "<form action='cambioPedido1.php' method='post'>";
+                                            echo "<input type='submit' name='submit' value='Preparar'>"; 
+                                            echo "<input type='hidden' name='idPedido' value='$idPedido'>"; 
+                                            echo "</form>";
+                                                                                    
+                                            
+                                        }
+                                        else if($row['IdEstado'] == 2){
+                                            echo "<form action='cambioPedido2.php' method='post'>";
+                                            echo "<input type='submit' name='submit' value='Enviar'>"; 
+                                            echo "<input type='hidden' name='idPedido' value='$idPedido'>"; 
+                                            echo "</form>";
+                                        }
+                                        else if($row['IdEstado'] == 3){
+                                            echo "<form action='cambioPedido3.php' method='post'>";
+                                            echo "<input type='submit' name='submit' value='Entragar'>"; 
+                                            echo "<input type='hidden' name='idPedido' value='$idPedido'>"; 
+                                            echo "</form>";
+                                        }
                                         
-                                            echo "<a href='read.php?IdIngrediente=". $row['IdIngrediente'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='update.php?IdIngrediente=". $row['IdIngrediente'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='delete.php?IdIngrediente=". $row['IdIngrediente'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-                                        echo "</td>";
-                                    echo "</tr>";
+                                        echo "</tr>";
+                                      
+                                        
+                                         
                                 }
                                 echo "</tbody>";                            
                             echo "</table>";

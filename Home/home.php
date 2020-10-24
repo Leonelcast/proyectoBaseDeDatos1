@@ -2,6 +2,7 @@
 session_start();
 $connect = mysqli_connect("localhost", "root", "", "restaurante");
 
+
 if(isset($_POST["add_to_cart"]))
 {
 	if(isset($_SESSION["shopping_cart"]))
@@ -90,19 +91,15 @@ if(isset($_GET["action"]))
       </div>
       <div class="col-4">
 	  <form action="search.php" method="POST">
-	  <label class="sr-only">Ingredientes</label>
-		<input type="text" name="Ingrediente" class="form-control" placeholder="Busqueda de Ingredientes">
+	 
 	 
 		
 
 <label class="sr-only">Platillos</label>
-		<input type="text" name="Platillos" class="form-control" placeholder="Busqueda de Platillos">
-       
-		<select class="form-control">
-    <option value="0">Disponible</option>
-	<option value="0">No Disponible</option>
-  </select>
-  <br>
+		<input type="text" name="Descripcion" class="form-control" placeholder="Busqueda de Platillos">
+		<label>Habilitado: </label>
+		<input type="checkbox" name="Habilitado" placeholder="Habilitado" checked value="1	">
+		</br>
   <input type="submit" name="buscar" class="btn btn-success" value= "Buscar">
   </form>
       </div>
@@ -165,29 +162,35 @@ if(isset($_GET["action"]))
      <div class="row">
        <div class ="col-3"></div>
        <div class ="col-6">
-   <form  class="form-signin" id="form">
+   <form  class="form-signin" id="form" method="POST" action="pedido.php">
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputEmail4">Nombre</label>
-      <input type="text" class="form-control"  placeholder="Nombre">
+      <input type="text" class="form-control"  placeholder="Nombre" name="nombre">
     </div>
     <div class="form-group col-md-6">
       <label for="inputPassword4">Direccion</label>
-      <input type="text" class="form-control" id="inputPassword4" placeholder="Direccion">
+      <input type="text" class="form-control" id="inputPassword4" placeholder="Direccion" name="direccion">
     </div>
   </div>
   <div class="form-group">
     <label for="inputAddress">Numero en la tarjeta</label>
-    <input type="text" class="form-control" placeholder="Numero de tarjeta">
+    <input type="text" class="form-control" placeholder="Numero de tarjeta" name="tarjeta">
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputCity">Fecha de expiracion</label>
-      <input type="date" class="form-control" id="inputCity">
+      <input type="date" class="form-control" id="inputCity" name="fecha_ex">
     </div>
     <div class="form-group col-md-2">
       <label for="inputZip">Codigo CV</label>
       <input type="text" class="form-control" id="inputZip">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <label for="observacion">Observacion</label>
+      <textarea type="text" class="form-control" name="observacion"></textarea>
     </div>
   </div>
   <button type="submit" class="btn btn-primary">Realizar pedido</button>
@@ -368,7 +371,7 @@ if(isset($_GET["action"]))
 </div>
 <br>
 <footer class="page-footer font-small blue" id="Footer">
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <div class="footer-copyright text-center py-3">©️ 2020 Copyright:
       <a> Pizza Planeta</a>
     </div>
  </footer>
@@ -389,3 +392,5 @@ if(isset($_GET["action"]))
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  
 	</body>
 </html>
+
+
