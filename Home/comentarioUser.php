@@ -3,39 +3,36 @@
 require_once "../Config/config.php";
  
 // Define variables and initialize with empty values
-$IdCategoria = "";
-$IdCategoria_err = "";
+$Comentario = "";
+$Comentario_err = "";
  
 // Processing form data when form is submitted
-if(isset($_POST["IdMenu"]) && !empty($_POST["IdMenu"])){
+if(isset($_POST["IdPedido"]) && !empty($_POST["IdPedido"])){
     // Get hidden input value
-    $IdMenu = $_POST["IdMenu"];
+    $IdPedido = $_POST["IdPedido"];
 
-    $input_IdCategoria= trim($_POST["IdCategoria"]);
-    if(empty($input_IdCategoria)){
-        $IdCategoria_err = "Please enter the IdCategoriaamount.";     
-    } elseif(!ctype_digit($input_IdCategoria)){
-        $IdCategoria_err = "Please enter a positive integer value.";
+    $input_Comentario= trim($_POST["Comentario"]);
+    if(empty($input_Comentario)){
+        $Comentario_err = "Ingrese un Comentario.";     
     } else{
-        $IdCategoria= $input_IdCategoria;
+        $Comentario = $input_Comentario;
     }
-    
     // Check input errors before inserting in database
-    if(empty($IdCategoria_err)){
+    if(empty($Comentario_err)){
         // Prepare an update statement
-        $sql = "UPDATE menus SET IdCategoria=? WHERE IdMenu=?";
+        $sql = "UPDATE pedidos SET Comentario=? WHERE IdPedido=?";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ii", $param_IdCategoria, $param_IdMenu);
+            mysqli_stmt_bind_param($stmt, "si", $param_Comentario, $param_IdPedido);
             
-            $param_IdCategoria= $IdCategoria;
-            $param_IdMenu = $IdMenu;
+            $param_Comentario= $Comentario;
+            $param_IdPedido = $IdPedido;
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("location: Menu.php");
+                header("location: UserPedido.php");
                 exit();
             } else{
                 echo "Something went wrong. Please try again later.";
@@ -50,31 +47,28 @@ if(isset($_POST["IdMenu"]) && !empty($_POST["IdMenu"])){
     mysqli_close($link);
 } else{
     // Check existence of id parameter before processing further
-    if(isset($_GET["IdMenu"]) && !empty(trim($_GET["IdMenu"]))){
+    if(isset($_GET["IdPedido"]) && !empty(trim($_GET["IdPedido"]))){
         // Get URL parameter
-        $IdMenu =  trim($_GET["IdMenu"]);
+        $IdPedido =  trim($_GET["IdPedido"]);
         
         // Prepare a select statement
-        $sql = "SELECT * FROM menus WHERE IdMenu = ?";
+        $sql = "SELECT * FROM pedidos WHERE IdPedido = ?";
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "i", $param_IdMenu);
+            mysqli_stmt_bind_param($stmt, "i", $param_IdPedido);
             
             // Set parameters
-            $param_IdMenu = $IdMenu;
+            $param_IdPedido = $IdPedido;
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 $result = mysqli_stmt_get_result($stmt);
     
                 if(mysqli_num_rows($result) == 1){
-
-                    $query = "SELECT * FROM categorias;";
-                    $result = mysqli_query($link, $query);
                     /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                     
-                    $IdCategoria= $row["IdCategoria"];
+                    $Comentario= $row["Comentario"];
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -137,23 +131,14 @@ if(isset($_POST["IdMenu"]) && !empty($_POST["IdMenu"])){
             <hr>
 
                    <center> <p>Llena los campos para actualizar un nuevo Ingrediente</p></center>
-                   <div class="form-group <?php echo (!empty($IdRol_err)) ? 'has-error' : ''; ?>">
-                   <label class="form-label">Rol</label>
-                        <select  name="IdCategoria" class="form-control">
-                           <option value="<?php echo $IdCategoria ?>"><?php echo $row['Tipo'] ?></option>
-                           <?php
-                           
-                           ?>
-                            <?php
-                             while($row = mysqli_fetch_array($result)) { ?>
-                                <option value="<?php echo $row['IdCategoria'] ?>"><?php echo $row['Tipo'] ?></option>
-                              <?php }?>
-                            </select>
-                        </div>
                    
 
-              
-                        <input type="hidden" name="IdMenu" value="<?php echo $IdMenu; ?>"/>
+                   <div class="form-group <?php echo (!empty($Comentario_err)) ? 'has-error' : ''; ?>">
+                            <label>Comentario</label>
+                            <input type="text" name="Comentario" class="form-control" value="<?php echo $Comentario; ?>">
+                            <span class="help-block"><?php echo $Comentario_err;?></span>
+                        </div>
+                        <input type="hidden" name="IdPedido" value="<?php echo $IdPedido; ?>"/>
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <a href="Menu.php" class="btn btn-default">Cancel</a>
           </form>
@@ -181,6 +166,3 @@ if(isset($_POST["IdMenu"]) && !empty($_POST["IdMenu"])){
  </footer>
 </body>
 </html>
-
-
- 

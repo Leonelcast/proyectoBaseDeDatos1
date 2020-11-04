@@ -53,15 +53,17 @@ if(!isset($_SESSION['IdRol'])){
                     <?php
                     require_once "../Config/config.php";
                     
-                    $sql = "SELECT * FROM platillosingredientes";
+                    $sql = "SELECT  IdPlatillosIngredientes, platillos.Descripcion as platillo, Ingrediente, platillosingredientes.Descripcion as descripcion, cantidad
+                    FROM platillosingredientes inner join platillos on platillosingredientes.IdPlatillo=platillos.IdPlatillos 
+                    inner join ingredientes on platillosingredientes.IdIngrediente=ingredientes.IdIngrediente";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>IdIngrediente</th>";
-                                        echo "<th>IdPlatillo</th>";
+                                        echo "<th>Platillo</th>";
+                                        echo "<th>Ingrediente</th>";
                                         echo "<th>Descripcion</th>";
                                         echo "<th>Cantidad</th>";
                                         echo "<th>Editar/Eliminar</th>";
@@ -71,10 +73,10 @@ if(!isset($_SESSION['IdRol'])){
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['IdPlatillosIngredientes'] . "</td>";
-                                        echo "<td>" . $row['IdIngrediente'] . "</td>";
-                                        echo "<td>" . $row['IdPlatillo'] . "</td>";
-                                        echo "<td>" . $row['Descripcion'] . "</td>";
-                                        echo "<td>" . $row['Cantidad'] . "</td>";
+                                        echo "<td>" . $row['platillo'] . "</td>";
+                                        echo "<td>" . $row['Ingrediente'] . "</td>";
+                                        echo "<td>" . $row['descripcion'] . "</td>";
+                                        echo "<td>" . $row['cantidad'] . "</td>";
                                         echo "<td>";
                                        
                                         

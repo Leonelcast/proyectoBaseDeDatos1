@@ -120,17 +120,40 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <br>
 
                    <center> <p>Llena los campos para agregar un nuevo Ingrediente</p></center>
-                        <div class="form-group <?php echo (!empty($IdIngrediente_err)) ? 'has-error' : ''; ?>">
-                            <label for="IdIngrediente" class="sr-only">IdIngrediente</label>
-                            <input type="number" name="IdIngrediente" class="form-control" placeholder="Agrega el numero de IdIngrediente" value="<?php echo $IdIngrediente; ?>">
-                            <span class="help-block"><?php echo $IdIngrediente_err;?></span>
+
+                   <div class="col-md-12 form-group">
+                        <label class="form-label">Ingrediente</label>
+                        <select id="IdIngrediente" name="IdIngrediente" class="form-control">
+                           <option value="0">Seleccione el ingrediente</option>
+                           <?php
+                            $query = "SELECT * FROM ingredientes;";
+                            $result = mysqli_query($link, $query);
+
+                           ?>
+                            <?php
+                              while($row = mysqli_fetch_array($result)) { ?>
+                                <option value="<?php echo $row['IdIngrediente'] ?>"><?php echo $row['Ingrediente'] ?></option>
+                              <?php } ?>
+                            </select>
                         </div>
+
+                   
                         
             <br>
-            <div class="form-group <?php echo (!empty($IdPlatillo_err)) ? 'has-error' : ''; ?>">
-                            <label for="IdPlatillo" class="sr-only">IdPlatillo</label>
-                            <input type="number" name="IdPlatillo" class="form-control" placeholder="Agrega el numero de IdPlatillo" value="<?php echo $IdPlatillo; ?>">
-                            <span class="help-block"><?php echo $IdPlatillo_err;?></span>
+            <div class="col-md-12 form-group">
+                        <label class="form-label">Platillos</label>
+                        <select id="IdPlatillo" name="IdPlatillo" class="form-control">
+                           <option value="0">Seleccione el platillo</option>
+                           <?php
+                            $query2 = "SELECT * FROM platillos;";
+                            $result2 = mysqli_query($link, $query2);
+
+                           ?>
+                            <?php
+                              while($row2 = mysqli_fetch_array($result2)) { ?>
+                                <option value="<?php echo $row2['IdPlatillos'] ?>"><?php echo $row2['Descripcion'] ?></option>
+                              <?php } ?>
+                            </select>
                         </div>
             <br>
             <div class="form-group <?php echo (!empty($Descripcion_err)) ? 'has-error' : ''; ?>">

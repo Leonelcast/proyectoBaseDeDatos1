@@ -128,20 +128,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <input type="number" name="precio" class="form-control" placeholder="Precio" value="<?php echo $precio; ?>">
                             <span class="help-block"><?php echo $precio_err;?></span>
                         </div>
-                        <div class="form-group <?php echo (!empty($IdMenu_err)) ? 'has-error' : ''; ?>">
-                            <label for="precio" class="sr-only">IdMenu</label>
-                            <input type="number" name="IdMenu" class="form-control" placeholder="IdMenu" value="<?php echo $IdMenu; ?>">
-                            <span class="help-block"><?php echo $IdMenu_err;?></span>
+                        <div class="col-md-12 form-group">
+                        <label class="form-label">Tipo de Menu:</label>
+                        <select id="IdMenu" name="IdMenu" class="form-control">
+                           <option value="0">Seleccione la categoria</option>
+                           <?php
+                            $query = "SELECT  IdMenu, Tipo FROM menus inner join categorias c on menus.IdCategoria=c.IdCategoria;";
+                            $result = mysqli_query($link, $query);
+
+                           ?>
+                            <?php
+                              while($row = mysqli_fetch_array($result)) { ?>
+                                <option value="<?php echo $row['IdMenu'] ?>"><?php echo $row['Tipo'] ?></option>
+                              <?php } ?>
+                            </select>
                         </div>
+
+                   
+
          
             <div class="form-group <?php echo (!empty($destacado_err)) ? 'has-error' : ''; ?>">
                             <label class="sr-only">destacado</label>
-                            <input type="text" name="destacado" class="form-control"  placeholder="Destacado utilizar 0 y 1" value="<?php echo $destacado; ?>">
+                            <input type="text" name="destacado" class="form-control"  placeholder="Destacado utilizar 1 y No Destacado utilizar 0" value="<?php echo $destacado; ?>">
                             <span class="help-block"><?php echo $destacado_err;?></span>
                         </div>
                         <div class="form-group">
                             <label for="habilitado" class="sr-only">habilitado</label>
-                            <input type="text" name="habilitado" class="form-control" placeholder="Habilitado Usar 0 y 1" value="<?php echo $habilitado; ?>">
+                            <input type="text" name="habilitado" class="form-control" placeholder="Habilitado utilizar 1 y no Habilitado utilizar 0" value="<?php echo $habilitado; ?>">
                         </div>
                         
                         <div class="form-group ">

@@ -8,12 +8,12 @@ if(isset($_POST)){
     $d = $_POST['direccion'];
     $t = $_POST['tarjeta'];
     $f = $_POST['fecha_ex'];
-    $user=$_SESSION['IdUsuarios'];
+    $user=$_SESSION['IdUsuario'];
     $result2=$connect->query("INSERT INTO `tarjetas` (`IdTarjeta`, `Nombre`, `Direccion`, `NumeroTarjeta`, `FechaExpiracion`, `IdUsuario`) 
     VALUES (NULL, '$n', '$d', '$t', '$f', '$user')");
 
     $observacion = $_POST['observacion'];
-    $user=$_SESSION['IdRol'];
+    
 
     $result =$connect->query("INSERT INTO `pedidos` (`IdPedido`, `IdEstadoPedido`, `Fecha`, `Confirmado`, `IdUsuarios`, `observacion`)
     VALUES (NULL, '1', NOW(), 1, '$user', '$observacion');");

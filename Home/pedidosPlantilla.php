@@ -34,18 +34,23 @@ require_once "../ConexionesUsuario/EmpleadoAdmin.php";
     <br>
     <br>
     <section>
-    <div class="wrapper" >
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header clearfix">
+    <div class= "container">
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-4">
+
+                <form class="form-inline my-2 my-lg-0" metho="GET" action="busquedaPedido.php">
+                  <input class="form-control mr-sm-2"  name="buscar" type="search" placeholder="Search" aria-label="Search">
+                  <input type="submit" value="Search" class="btn btn-success">
+                </form>
+                    
                         <h2 class="pull-left">Pedidos</h2>
         
-                    </div>
+                  
                     <?php
                     require_once "../Config/config.php";
                     
-                    $sql = "SELECT IdPedido, estadopedidos.IdEstadoPedido as IdEstado, estadopedidos.Nombre as NombreEstado, Fecha, Confirmado, observacion, total, Correo, usuarios.Nombre as NombreUsuario, Apellido from usuarios INNER JOIN pedidos 
+                    $sql = "SELECT IdPedido, estadopedidos.IdEstadoPedido as IdEstado, estadopedidos.Nombre as NombreEstado, Fecha, Confirmado, observacion, Comentario, total, Correo, usuarios.Nombre as NombreUsuario, Apellido from usuarios INNER JOIN pedidos 
                     ON pedidos.IdUsuarios = usuarios.IdUsuario INNER JOIN  estadopedidos on pedidos.IdEstadoPedido = estadopedidos.IdEstadoPedido;";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
@@ -61,7 +66,9 @@ require_once "../ConexionesUsuario/EmpleadoAdmin.php";
                                         echo "<th>Correo</th>";
                                         echo "<th>Nombre</th>";
                                         echo "<th>Apellido</th>";
+                                        echo "<th>Comentario</th>";
                                         echo "<th>Estado</th>";
+                                        
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
@@ -76,11 +83,13 @@ require_once "../ConexionesUsuario/EmpleadoAdmin.php";
                                         echo "<td>" . $row['Correo'] . "</td>";
                                         echo "<td>" . $row['NombreUsuario'] . "</td>";
                                         echo "<td>" . $row['Apellido'] . "</td>";
+                                        echo "<td>" . $row['Comentario'] . "</td>";
                                         echo "<td>";  "</td>";
+                                        echo "<a href='UEmpleadoC.php?IdPedido=". $row['IdPedido'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
                                         $idPedido = $row['IdPedido'];
                                         if($row['IdEstado'] ==1){
                                             echo "<form action='cambioPedido1.php' method='post'>";
-                                            echo "<input type='submit' name='submit' value='Preparar'>"; 
+                                            echo "<input type='submit' name='submit' value='Preparar' class='btn btn-success'>"; 
                                             echo "<input type='hidden' name='idPedido' value='$idPedido'>"; 
                                             echo "</form>";
                                                                                     
@@ -88,13 +97,13 @@ require_once "../ConexionesUsuario/EmpleadoAdmin.php";
                                         }
                                         else if($row['IdEstado'] == 2){
                                             echo "<form action='cambioPedido2.php' method='post'>";
-                                            echo "<input type='submit' name='submit' value='Enviar'>"; 
+                                            echo "<input type='submit' name='submit' value='Enviar' class='btn btn-success'>"; 
                                             echo "<input type='hidden' name='idPedido' value='$idPedido'>"; 
                                             echo "</form>";
                                         }
                                         else if($row['IdEstado'] == 3){
                                             echo "<form action='cambioPedido3.php' method='post'>";
-                                            echo "<input type='submit' name='submit' value='Entragar'>"; 
+                                            echo "<input type='submit' name='submit' value='Entregar' class='btn btn-success'>"; 
                                             echo "<input type='hidden' name='idPedido' value='$idPedido'>"; 
                                             echo "</form>";
                                         }
@@ -119,6 +128,7 @@ require_once "../ConexionesUsuario/EmpleadoAdmin.php";
                 </div>
             </div>        
         </div>
+        <div class="col-1"></div>
     </div>
     </section>
 

@@ -203,11 +203,14 @@ if(isset($_GET["action"]))
    
     <br>
 		<div class="container">
-		
-			<center><h3>Almuerzo</h3></center> 
-			<hr>
+		<center><h3>Menu</h3></center> 
+		<hr>
+			
 			<?php
-				$query = "SELECT * FROM platillos where IdMenu = 2";
+				$query = "SELECT *
+				FROM platillos
+				INNER JOIN menus ON platillos.IdMenu = menus.IdMenu
+				INNER JOIN categorias ON categorias.IdCategoria = menus.IdCategoria;";
 				$result = mysqli_query($connect, $query);
 				if(mysqli_num_rows($result) > 0)
 				{
@@ -215,6 +218,7 @@ if(isset($_GET["action"]))
 					{
 				?>
 			<div class="col-md-3">
+			<center><h4 class="text-info"><?php echo $row["Tipo"]; ?></h4></center>
 				<form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
 					<div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;" align="center">
 					<img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>" class="img-responsive">
@@ -240,93 +244,7 @@ if(isset($_GET["action"]))
 					}
 				}
 			?>
-      <div class=" container">
-      <div class="row">
-      <div class="col-9"></div>
-      <div class="col-3">
-      
-      
-      
-      </div>
-      </div>
-      </div>
-
-<div class="container">
-
-			<center><h3>Cena</h3></center> 
-			<hr>
-			<?php
-				$query = "SELECT * FROM platillos where IdMenu = 6 ";
-				$result = mysqli_query($connect, $query);
-				if(mysqli_num_rows($result) > 0)
-				{
-					while($row = mysqli_fetch_array($result))
-					{
-				?>
-			<div class="col-md-3">
-				<form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
-					<div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;" align="center">
-					<img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>" class="img-responsive">
-
-
-						<h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
-
-						<h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
-
-						<input type="text" name="quantity" value="1" class="form-control" />
-
-						<input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
-
-						<input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
-
-						<input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success" value="Add to Cart" />
-
-					</div>
-				</form>
-			</div>
-			<?php
-					}
-				}
-			?>
-			</div>
-			<div class="container">
-
-			<center><h3>Postres</h3></center> 
-			<hr>
-			<?php
-				$query = "SELECT * FROM platillos where IdMenu = 7 ";
-				$result = mysqli_query($connect, $query);
-				if(mysqli_num_rows($result) > 0)
-				{
-					while($row = mysqli_fetch_array($result))
-					{
-				?>
-			<div class="col-md-3">
-				<form method="post" action="home.php?action=add&id=<?php echo $row["IdPlatillos"]; ?>">
-					<div style="border:3px solid #5cb85c; background-color:whitesmoke; border-radius:5px; padding:16px;" align="center">
-					<img src= "data:image/jpeg;base64,<?php echo base64_encode($row['Fotografia'])?>" class="img-responsive">
-
-
-						<h4 class="text-info"><?php echo $row["Descripcion"]; ?></h4>
-
-						<h4 class="text-danger">Q <?php echo $row["precio"]; ?></h4>
-
-						<input type="text" name="quantity" value="1" class="form-control" />
-
-						<input type="hidden" name="hidden_name" value="<?php echo $row["Descripcion"]; ?>" />
-
-						<input type="hidden" name="hidden_price" value="<?php echo $row["precio"]; ?>" />
-
-						<input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success" value="Add to Cart" />
-
-					</div>
-				</form>
-			</div>
-			<?php
-					}
-				}
-			?>
-			</div>
+</div>		
 		
 <div class="container">
 

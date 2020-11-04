@@ -97,7 +97,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                   
                         <input type="submit" class="btn btn-primary" value="Agregar">
-                        <a href="Menu.php" class="btn btn-default">Cancelar</a>
+                        <a href="categorias.php" class="btn btn-default">Cancelar</a>
           </form>
           <br>
 

@@ -2,7 +2,12 @@
 
 
 <?php
-// Include config file
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'Exception.php';
+require 'PHPMailer.php';
+require 'SMTP.php';
 require_once "../Config/config.php";
  
 // Define variables and initialize with empty values
@@ -101,7 +106,44 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Close connection
     mysqli_close($link);
+
+  $mail = new PHPMailer(true);
+
+try {
+    //Server settings
+    $mail->SMTPDebug = 0;                      // Enable verbose debug output
+    $mail->isSMTP();                                            // Send using SMTP
+    $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+    $mail->Username   = 'castaneda161618@unis.edu.gt';                     // SMTP username
+    $mail->Password   = 'izquierdo12';                               // SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+    $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+
+    //Recipients
+    $mail->setFrom('castaneda161618@unis.edu.gt', 'Leonel');
+    $mail->addAddress($Correo, $Nombre);     // Add a recipient
+
+
+    // Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'Registrado';
+    $mail->Body    = 'Bienvenido a Pizza Planeta';
+   
+
+    $mail->send();
+    echo 'Message has been sent';
+} catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
+
+
+  header("Location: login.php");
+
+        
+}
+
+
 ?>
  
 <!DOCTYPE html>

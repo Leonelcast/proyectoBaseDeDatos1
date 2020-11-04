@@ -1,15 +1,9 @@
 <?php
-session_start();
-if(!isset($_SESSION['IdRol'])){
-  header('location: ../Login/login.php');
-}else{
-  if($_SESSION['IdRol'] !=1){
-    header('location: ../Login/login.php');
-  }
-
-}
+    session_start();
+    $Id = $_SESSION['IdUsuario'];
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,59 +35,52 @@ if(!isset($_SESSION['IdRol'])){
     <br>
     <br>
     <section>
-      <center>
-    <h2>Platillo</h2></center>
     <div class="wrapper" >
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                       
-       
-                        <a href="createPlatillo.php" class="btn btn-success pull-right">Agregar nuevo Platillo</a>
-                        <form class="form-inline my-2 my-lg-0" method="GET" action="busquedaPlatillo.php">
-                  <input class="form-control mr-sm-2"  name="buscar" type="search" placeholder="Search" aria-label="Search">
-                  <input type="submit" value="Search" class="btn btn-success">
-                </form>
+                        <h2 class="pull-left">Pedidos</h2>
+        
                     </div>
                     <?php
                     require_once "../Config/config.php";
                     
-                    $sql = "SELECT IdPlatillos, precio, Tipo, destacado, habilitado, Descripcion, Fotografia from platillos inner join menus on 
-                    platillos.IdMenu = menus.IdMenu inner join categorias on menus.IdCategoria = categorias.IdCategoria;";
+                    $sql = "SELECT IdPedido, estadopedidos.IdEstadoPedido as IdEstado, estadopedidos.Nombre as NombreEstado, Fecha, Confirmado, observacion, Comentario, total, Correo, usuarios.Nombre as NombreUsuario, Apellido from usuarios INNER JOIN pedidos 
+                    ON pedidos.IdUsuarios = usuarios.IdUsuario INNER JOIN  estadopedidos on pedidos.IdEstadoPedido = estadopedidos.IdEstadoPedido WHERE IdUsuario = $Id";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Precio</th>";
-                                        echo "<th>Categoria</th>";
-                                        echo "<th>Destacado</th>";
-                                        echo "<th>Habilitado</th>";
-                                        echo "<th>Descripcion</th>";
-                                        echo "<th>Fotografia</th>";
-                                        echo "<th>Editar/Eliminar</th>";
+                                        echo "<th>IdEstado</th>";
+                                        echo "<th>Estado</th>";
+                                        echo "<th>Fecha</th>";
+                                        echo "<th>Observacion</th>";
+                                        echo "<th>Total</th>";
+                                        echo "<th>Comentario</th>";
+                                        echo "<th>Agrega un comentario</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['IdPlatillos'] . "</td>";
-                                        echo "<td>" . $row['precio'] . "</td>";
-                                        echo "<td>" . $row['Tipo'] . "</td>";
-                                        echo "<td>" . $row['destacado'] . "</td>";
-                                        echo "<td>" . $row['habilitado'] . "</td>";
-                                        echo "<td>" . $row['Descripcion'] . "</td>";
-                                       
-
-                                        echo "<td>". "<img src='data:image/jpeg;base64," .base64_encode($row['Fotografia'])."' />". "</td>";
-                                        echo "<td>";
-                                        echo "<a href='readPlatillo.php?IdPlatillos=". $row['IdPlatillos'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='updatePlatillo.php?IdPlatillos=". $row['IdPlatillos'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='deletePlatillo.php?IdPlatillos=". $row['IdPlatillos'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-                                        echo "</td>";
-                                    echo "</tr>";
+                                        echo "<td>" . $row['IdPedido'] . "</td>";
+                                        echo "<td>" . $row['IdEstado'] . "</td>";
+                                        echo "<td>" . $row['NombreEstado'] . "</td>";
+                                        echo "<td>" . $row['Fecha'] . "</td>";
+                                        echo "<td>" . $row['observacion'] . "</td>";
+                                        echo "<td>" . $row['total'] . "</td>";
+                                        echo "<td>" . $row['Comentario'] . "</td>";
+                                        echo "<td>";  "</td>";
+                                        echo "<a href='comentarioUser.php?IdPedido=". $row['IdPedido'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                        
+                                        
+                                        echo "</tr>";
+                                      
+                                        
+                                         
                                 }
                                 echo "</tbody>";                            
                             echo "</table>";

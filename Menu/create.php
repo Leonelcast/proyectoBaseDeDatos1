@@ -90,7 +90,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <br>
 
                    <center> <p>Llena los campos para agregar un Menu</p></center>
-                   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                  
 
                         <div class="col-md-12 form-group">
                         <label class="form-label">Categoria</label>

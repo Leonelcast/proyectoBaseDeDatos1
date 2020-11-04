@@ -1,0 +1,337 @@
+.food_offer {
+    width: 100%;
+    height: 500px;
+    background-image: url("../img/comida2.jpg");
+    color: #fff;
+  }
+  
+  .food_offer2 {
+    width: 100%;
+    height: 500px;
+    background-image: url("../img/bg_1.jpg");
+    color: #fff;
+  }
+  
+  .food_offer3 {
+    width: 100%;
+    height: 500px;
+    background-image: url("../img/bg_5.jpg");
+    color: #fff;
+  }
+  
+  .food_offer4 {
+    width: 100%;
+    height: 500px;
+    background-image: url("../img/bg_2.jpg");
+    color: #fff;
+  }
+  
+  .food_offer5 {
+    width: 100%;
+    height: 500px;
+    background-image: url("../img/bg_8.1.jpg");
+    color: #fff;
+  }
+  
+  .food_offer6 {
+    width: 100%;
+    height: 700px;
+    background-image: url("../img/bg_8.1.jpg");
+    color: #fff;
+  }
+  
+  .food_offer7 {
+    width: 100%;
+    height: 900px;
+    background-image: url("../img/bg_7.jpg");
+    color: #fff;
+  }
+  
+  .food_offer8 {
+    width: 100%;
+    height: 600px;
+    background-image: url("../img/IMAGE50.png");
+    color: #fff;
+  }
+  
+  .food_offer_heading {
+    font-weight: 600;
+    font-size: 50px;
+    text-transform: uppercase;
+  }
+  
+  .food_offer_subheading {
+    font-weight: 300;
+    letter-spacing: 5px;
+  }
+  
+  #photo_menu {
+    alt: 150px;
+    width: 150px;
+  }
+  
+  .menu {
+    list-style-type: none;
+  }
+  
+  .menu_item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    color: black;
+    line-height: 50px;
+  }
+  
+  .menu_price {
+    color: #c57f1e;
+  }
+  
+  figure {
+    position: relative;
+    width: 310px;
+    height: 310px;
+  }
+  
+  figure img {
+    width: 100%;
+    height: 100%;
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  figure .back {
+    position: absolute;
+    top: 40px;
+    left: -40px;
+    width: 100%;
+    height: 100%;
+    background-color: #f6cd61;
+    z-index: -1;
+  }
+  
+  .navbar-brand {
+    color: black;
+  }
+  
+  #narv {
+    background-image: url("../img/menu.png");
+  }
+  
+  .custom-toggler.navbar-toggler {
+    border-color: black;
+  }
+  
+  .navbar-nav .nav-link {
+    color: rgba(0, 0, 0, 0.76);
+  }
+  
+  .valign_wrapper {
+    text-align: center;
+  }
+  
+  .offer-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #f6cd61;
+    background-color: #fff;
+    padding: 10px 25px;
+    margin-top: 15px;
+    border-radius: 27px;
+    -webkit-transition: 0.4s all;
+    transition: 0.4s all;
+  }
+  
+  .offer-btn2 {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    background-color: #ffa931;
+    padding: 10px 25px;
+    margin-top: 15px;
+    border-radius: 27px;
+    -webkit-transition: 0.4s all;
+    transition: 0.4s all;
+  }
+  
+  .offer-btn:hover {
+    background-color: #f6cd61;
+    color: #fff;
+  }
+  
+  #n1 {
+    color: black;
+    background-color: #fff;
+  }
+  
+  .about {
+    padding: 80px 0;
+  }
+  
+  .align-items-center {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+  
+  .overlay {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .site_heading {
+    font-family: "Merienda";
+    color: #fff;
+    font-size: 100px;
+    font-weight: bold;
+  }
+  
+  .mb_auto {
+    margin-bottom: auto;
+  }
+  
+  .site_subheading {
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: 6px;
+  }
+  
+  .header {
+    width: 100%;
+    height: 500px;
+    background-image: url("../img/IMG_9692.jpeg");
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+  }
+  
+  .line-space {
+    line-height: 40px;
+  }
+  
+  #f {
+    background-color: black;
+    color: #fff;
+  }
+  
+  #primary {
+    color: #fff;
+    background-color: #1a1c20;
+    border-color: #1a1c20;
+  }
+  
+  #l {
+    background-color: #f6cd61;
+  }
+  
+  #navbar {
+    background-color: #f6cd61;
+  }
+  
+  .text-info {
+    color: black;
+  }
+  
+  .card-body {
+    -webkit-box-align: right;
+        -ms-flex-align: right;
+            align-items: right;
+  }
+  
+  .form-signin {
+    width: 120%;
+    max-width: 700px;
+    padding: 15px;
+    border: 3px solid #555;
+    margin: auto;
+    -ms-flex-align: center;
+    -webkit-box-align: center;
+            align-items: center;
+  }
+  
+  .form-signin2 {
+    background-color: whitesmoke;
+    width: 110%;
+    max-width: 500px;
+    padding: 15px;
+    border: 2px solid #555;
+    margin: auto;
+    -ms-flex-align: center;
+    -webkit-box-align: center;
+            align-items: center;
+  }
+  
+  .form-signin .checkbox {
+    font-weight: 400;
+  }
+  
+  .form-signin .form-control {
+    position: relative;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .form-signin .form-control:focus {
+    z-index: 2;
+  }
+  
+  #form {
+    background-color: #f6cd61;
+  }
+  
+  .box-form {
+    margin: 0 auto;
+    width: 80%;
+    background: #FFFFFF;
+    border-radius: 10px;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 100%;
+            flex: 1 1 100%;
+    -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-shadow: 0 0 20px 6px #090b6f85;
+            box-shadow: 0 0 20px 6px #090b6f85;
+  }
+  
+  @media (max-width: 980px) {
+    .box-form {
+      -ms-flex-flow: wrap;
+          flex-flow: wrap;
+      text-align: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+    }
+  }
+  
+  .box-form .left {
+    color: #FFFFFF;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
