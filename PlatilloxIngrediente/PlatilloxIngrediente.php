@@ -1,14 +1,5 @@
 <?php
-/*ession_start();
-if(!isset($_SESSION['IdRol'])){
-  header('location: ../Login/login.php');
-}else{
-  if($_SESSION['IdRol'] !=1 ){
-    header('location: ../Login/login.php');
-  }
-
-}
-*/
+include '../ConexionesUsuario/EmpleadoAdmin.php';
 ?>
 
 <!DOCTYPE html>
@@ -24,16 +15,16 @@ if(!isset($_SESSION['IdRol'])){
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="./Home.html">Pizza Planeta</a>
+<nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="../Home/home.php">Pizza Planeta</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span> </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Menu</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Promociones</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Pedidos</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Login</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../Home/home.php">Menu</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../ConexionesUsuario/pedidos.php">Pedidos</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../ConexionesUsuario/profile.php">Perfil</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../Login/welcome.php">LogOut</a>
           
 
     </nav>

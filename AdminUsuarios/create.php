@@ -1,13 +1,12 @@
 
 
-
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'Exception.php';
-require 'PHPMailer.php';
-require 'SMTP.php';
+require '../Login/Exception.php';
+require '../Login/PHPMailer.php';
+require '../Login/SMTP.php';
 require_once "../Config/config.php";
  
 // Define variables and initialize with empty values
@@ -70,7 +69,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $Apellido = trim($_POST["Apellido"]);
     }
-
+    if(empty(trim($_POST["IdRol"]))){
+        $IdRol_err = "Please enter a Nombre.";     
+    } else{
+        $IdRol = trim($_POST["IdRol"]);
+    }
  
     
 
@@ -78,24 +81,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($Correo_err) && empty($Contraseña_err) && empty($Nombre_err) && empty($Apellido_err) && empty($IdRol_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO usuarios (Correo, Contraseña, Nombre, Apellido, IdRol, Fecha ) VALUES (?, ?, ?, ?, 3, NOW())";
+        $sql = "INSERT INTO usuarios (Correo, Contraseña, Nombre, Apellido, IdRol, Fecha ) VALUES (?, ?, ?, ?, ?, NOW())";
 
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssss", $param_Correo, $param_Contraseña, $param_Nombre, $param_Apellido);
+            mysqli_stmt_bind_param($stmt, "ssssi", $param_Correo, $param_Contraseña, $param_Nombre, $param_Apellido, $param_IdRol);
             
             // Set parameters
             $param_Correo = $Correo;
             $param_Contraseña = password_hash($Contraseña, PASSWORD_DEFAULT); // Creates a Contraseña hash
             $param_Nombre = $Nombre;
             $param_Apellido = $Apellido;
+            $param_IdRol =$IdRol;
 
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
-                header("location: login.php");
+                header("location: AdminUsers.php");
             } else{
                 echo "Something went wrong. Please try again later.";
             }
@@ -139,7 +143,7 @@ try {
 }
 
 
-  header("Location: login.php");
+  header("Location: AdminUsers.php");
 
         
 }
@@ -203,6 +207,22 @@ try {
                 <input type="Nombre" name="Apellido" class="form-control" value="<?php echo $Apellido; ?>">
                 <span class="help-block"><?php echo $Apellido_err; ?></span>
             </div>
+
+            <div class="col-md-12 form-group">
+                        <label class="form-label">Tipo de Rol</label>
+                        <select id="IdRol" name="IdRol" class="form-control">
+                           <option value="0">Seleccione el rol de usuario</option>
+                           <?php
+                            $query = "SELECT * FROM roles;";
+                            $result = mysqli_query($link, $query);
+
+                           ?>
+                            <?php
+                              while($row = mysqli_fetch_array($result)) { ?>
+                                <option value="<?php echo $row['IdRol'] ?>"><?php echo $row['Nombre'] ?></option>
+                              <?php } ?>
+                            </select>
+                        </div>
 
 
             <div class="form-group">

@@ -66,17 +66,16 @@ if(isset($_GET["action"]))
 </head>
 	<body>
   <header>
-    <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="./Home.html">Pizza Planeta</a>
+  <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="../Home/home.php">Pizza Planeta</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span> </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Menu</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Promociones</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Pedidos</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Login</a>
-          
+          <a class="nav-item nav-link"  id="TextNavColor" href="../Home/home.php">Menu</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../ConexionesUsuario/pedidos.php">Pedidos</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../ConexionesUsuario/profile.php">Perfil</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../Login/welcome.php">Login</a>
 
     </nav>
   </header>
@@ -98,7 +97,7 @@ if(isset($_GET["action"]))
 <label class="sr-only">Platillos</label>
 		<input type="text" name="Descripcion" class="form-control" placeholder="Busqueda de Platillos">
 		<label>Habilitado: </label>
-		<input type="checkbox" name="Habilitado" placeholder="Habilitado" checked value="1	">
+		<input type="checkbox" name="Habilitado" placeholder="Habilitado" checked value="1">
 		</br>
   <input type="submit" name="buscar" class="btn btn-success" value= "Buscar">
   </form>
@@ -210,7 +209,7 @@ if(isset($_GET["action"]))
 				$query = "SELECT *
 				FROM platillos
 				INNER JOIN menus ON platillos.IdMenu = menus.IdMenu
-				INNER JOIN categorias ON categorias.IdCategoria = menus.IdCategoria;";
+				INNER JOIN categorias ON categorias.IdCategoria = menus.IdCategoria WHERE habilitado= 1;";
 				$result = mysqli_query($connect, $query);
 				if(mysqli_num_rows($result) > 0)
 				{
@@ -251,7 +250,7 @@ if(isset($_GET["action"]))
 <center><h3>Destacados</h3></center> 
 <hr>
 <?php
-	$query = "SELECT * FROM platillos where destacado = true limit 4; ";
+	$query = "SELECT * FROM platillos where destacado = false limit 4; ";
 	$result = mysqli_query($connect, $query);
 	if(mysqli_num_rows($result) > 0)
 	{

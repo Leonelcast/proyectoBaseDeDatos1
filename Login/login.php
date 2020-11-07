@@ -12,6 +12,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 require_once "../Config/config.php";
  
 // Define variables and initialize with empty values
+$Fecha = date('Y-m-d H:i:s');
 $Correo = $Contraseña =  "";
 $Correo_err = $Contraseña_err = "";
  
@@ -36,6 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($Correo_err) && empty($Contraseña_err)){
         // Prepare a select statement
         $sql = "SELECT IdUsuario, Correo, Contraseña, Nombre, Apellido, IdRol FROM usuarios WHERE Correo = ?";
+        $sql2 = "UPDATE usuarios set Fecha = NOW() where Correo = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -64,7 +66,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["Correo"] = $Correo;
                             $_SESSION["Nombre"] = $Nombre;
                             $_SESSION["Apellido"] = $Apellido;
-                            $_SESSION['IdRol']= $IdRol;                            
+                            $_SESSION['IdRol']= $IdRol;   
+                            
+                            if($stmtUpdate = mysqli_prepare($link, $sql2)){
+                      
+                                mysqli_stmt_bind_param($stmtUpdate,"s",$param_Correo);
+                                
+                              
+                                
+                                $param_Correo = $Correo;
+                                
+                                
+                                if(mysqli_stmt_execute($stmtUpdate)){
+                                    header("location: Roles.php");
+                                    exit();
+                                } else{
+                                    echo "Something went wrong. Please try again later.";
+                                }
+                            }
                             
                             // Redirect user to welcome page
                             header("location: Roles.php");
@@ -103,16 +122,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="./Home.html">Pizza Planeta</a>
+<nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="../Home/home.php">Pizza Planeta</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span> </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Menu</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Promociones</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Pedidos</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Login</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../Home/home.php">Menu</a>
+         
           </nav>
   </header>
   <br>

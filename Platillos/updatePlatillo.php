@@ -97,8 +97,13 @@ if(isset($_POST["IdPlatillos"]) && !empty($_POST["IdPlatillos"])){
                 $result = mysqli_stmt_get_result($stmt);
     
                 if(mysqli_num_rows($result) == 1){
-                    
+                    $query = "SELECT  IdMenu, Tipo FROM menus inner join 
+                    categorias c on menus.IdCategoria=c.IdCategoria;";
+
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+                    
+                    $result = mysqli_query($link, $query);
         
 
                     $precio = $row["precio"];
@@ -144,16 +149,16 @@ if(isset($_POST["IdPlatillos"]) && !empty($_POST["IdPlatillos"])){
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="./Home.html">Pizza Planeta</a>
+<nav class="navbar navbar-expand-lg" id="navbar"> <a class="navbar-brand"  id="TextNavColor" href="../Home/home.php">Pizza Planeta</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span> </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Menu</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Promociones</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./registry.html">Pedidos</a>
-          <a class="nav-item nav-link"  id="TextNavColor" href="./Index.html">Login</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../Home/home.php">Menu</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../ConexionesUsuario/pedidos.php">Pedidos</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../ConexionesUsuario/profile.php">Perfil</a>
+          <a class="nav-item nav-link"  id="TextNavColor" href="../Login/welcome.php">LogOut</a>
          </nav>
   </header>
   <br>
@@ -175,9 +180,16 @@ if(isset($_POST["IdPlatillos"]) && !empty($_POST["IdPlatillos"])){
                             <span class="help-block"><?php echo $precio_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($IdMenu_err)) ? 'has-error' : ''; ?>">
-                            <label for="precio" class="sr-only">IdMenu</label>
-                            <input type="number" name="IdMenu" class="form-control" placeholder="IdMenu" value="<?php echo $IdMenu; ?>">
-                            <span class="help-block"><?php echo $IdMenu_err;?></span>
+                   <label class="form-label">Rol</label>
+                        <select  name="IdMenu" class="form-control">
+                           <?php
+                           
+                           ?>
+                            <?php
+                             while($row = mysqli_fetch_array($result)) { ?>
+                                <option value="<?php echo $row['IdMenu'] ?>"><?php echo $row['Tipo'] ?></option>
+                              <?php }?>
+                            </select>
                         </div>
          
             <div class="form-group <?php echo (!empty($destacado_err)) ? 'has-error' : ''; ?>">
@@ -198,7 +210,7 @@ if(isset($_POST["IdPlatillos"]) && !empty($_POST["IdPlatillos"])){
                         <input type="hidden" name="IdPlatillos" value="<?php echo $IdPlatillos; ?>"/>
                         <center>
                         <?php
-                        echo "<td>". "<img src='data:image/jpeg;base64," .base64_encode($row['Fotografia'])."' />". "</td>"; ?> </center>
+                        echo "<td>". "<img src='data:image/jpeg;base64," .base64_encode($Fotografia)."' />". "</td>"; ?> </center>
                         <br>
                         <input type='file' name='Fotografia' class="form-control">
                         <br>

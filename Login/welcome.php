@@ -7,7 +7,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
-echo htmlspecialchars($_SESSION["IdUsuario"]);
+
 ?>
  
 <!DOCTYPE html>
@@ -22,7 +22,7 @@ echo htmlspecialchars($_SESSION["IdUsuario"]);
 </head>
 <body>
     <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["Correo"]); ?></b>. Welcome to our site.</h1>
+        <h1>Hola, <b><?php echo htmlspecialchars($_SESSION["Nombre"]); ?></b>.¿Seguro que quieres cerrar sesion?.</h1>
     </div>
     <p>
         
